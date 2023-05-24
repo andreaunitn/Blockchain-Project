@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "cd ScholarshipServer && npm install && npm run start",
+    "build": "cd ScholarshipFrontEnd && npm install --legacy-peer-deps && npm run build",
+    "heroku-postbuild": "cd ScholarshipEnd && npm install --legacy-peer-deps && npm run build:prod"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
