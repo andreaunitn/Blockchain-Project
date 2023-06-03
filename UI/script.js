@@ -124,3 +124,81 @@ async function setValueOfSmartConctract() {
          })
        })
 }
+
+async function deployPeopleCollector() {
+  fetch('http://localhost:3000/contracts/IterableMapping.json', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(response => {
+
+      var bytecode = response.bytecode;
+
+      ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [{
+          from: myAccountAddress,
+          data: bytecode.toString('hex'),
+        }]
+      }).then((transactionHash) => {
+        console.log(transactionHash);
+        web3.eth.getTransactionReceipt(transactionHash).then((receipt) => {
+          if (receipt && receipt.contractAddress) {
+            receiverAddress = receipt.contractAddress;
+            console.log("Contract deployed at address:", receiverAddress);
+          }
+        });
+      }).catch((error) => {
+        console.log(error);
+      });
+    });
+}
+
+
+async function applyForScholarship() {
+  if (typeof window.ethereum !== 'undefined') {
+    await window.ethereum.enable(); // Request user's permission to access their accounts
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    if (accounts.length === 0) {
+      console.error('No accounts found');
+      return;
+    }
+    const userAddress = accounts[0]; // Get the user's address from MetaMask
+
+    const name = document.getElementById('name').value; // Retrieve name from form
+    const isee = parseInt(document.getElementById('isee').value); // Retrieve isee value from form
+
+    fetch('http://localhost:3000/contracts/PeopleCollector.json', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(response => {
+        const abi = response.abi;
+        const contract = new web3.eth.Contract(abi, receiverAddress);
+
+        const f = contract.methods.setUser(userAddress, name, isee).encodeABI(); // Call setUser() with the provided values
+
+        ethereum.request({
+          method: 'eth_sendTransaction',
+          params: [{
+            from: myAccountAddress,
+            to: receiverAddress,
+            data: f
+          }]
+        }).then((res) => {
+          const result = web3.eth.abi.decodeParameter('uint', res);
+          console.log(result);
+        }).catch((error) => {
+          console.log(error);
+        });
+      });
+  } else {
+    console.error('MetaMask is not installed');
+  }
+}

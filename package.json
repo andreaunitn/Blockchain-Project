@@ -14,5 +14,9 @@
   "license": "ISC",
   "devDependencies": {
     "lite-server": "^2.3.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "web3": "^1.10.0"
   }
 }
