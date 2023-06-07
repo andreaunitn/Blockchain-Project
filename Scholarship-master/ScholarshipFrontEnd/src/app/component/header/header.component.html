@@ -1,0 +1,44 @@
+<mat-toolbar color="primary">
+    <button style="color:white; border: 0px; background-color:#3f51b5" routerLink="/"><h3>1</h3></button>
+    <span style="padding-left: 30px;"></span>
+    <button style="color:white; border: 0px; background-color:#3f51b5" routerLink="/"><h3>2</h3></button>
+    <span style="padding-left: 30px;"></span>
+    <button *ngIf="session.getItem('token') != undefined" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/history"><h3>History</h3></button>
+    <span class="fx-spacer"></span>
+    <!--<a *ngIf="session.getItem('username') == null; then notLoggedIn else loggedIn"> </a>-->
+</mat-toolbar>
+  
+  <ng-template #notLoggedIn>
+    <div ngbDropdown>
+      <button mat-raised-button color="indigo" id="loginMenu" ngbDropdownToggle>Login</button>
+      <div ngbDropdownMenu aria-labelledby="loginMenu"  style="width:300px; height: 350px;">
+        <div class="px-1 py-3">
+          <form class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Username: </mat-label>
+              <textarea matInput  id="username" #username placeholder="Username" required></textarea>
+            </mat-form-field>
+            <br>
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Inserire la password</mat-label>
+              <input matInput  id="psw" #psw placeholder="Password" [type]="'password'" required>
+            </mat-form-field>
+            <mat-error style="display: none; width: 240px; margin-left: 10%;" class="example-full-width" id="loginErrorMessage"></mat-error>
+          </form>
+          <button mat-raised-button color="primary" style="float:right; margin-right: 10%" (click)="login($any(username.value), $any(psw.value))">Sign In</button>
+          <button mat-raised-button color="primary" style="float:right; margin-right: 3%" (click)="loginGoogle()">Sign In with google</button><br>
+          <a style="float:right; margin-right: 10%" routerLink="/signup">Non hai un account? Registrati</a>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #loggedIn>
+    <div ngbDropdown>
+      <button mat-raised-button [matMenuTriggerFor]="profile" style="background-color: white; color: #3f51b5; border:0px;"> {{session.getItem("username")}} </button>
+      <mat-menu #profile="matMenu" class="mymegamenu">
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon> Logout </button>
+      </mat-menu>
+    </div>
+  </ng-template>

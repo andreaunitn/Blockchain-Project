@@ -8,6 +8,7 @@ const user = require('./routes/v1/user.js');
 const per = require('./routes/v1/personal.js');
 const eco = require('./routes/v1/economic.js');
 const uni = require('./routes/v1/university.js');
+const call = require('./routes/v1/call.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,6 +33,11 @@ app.use('/api/v1/economic', eco);
  * Manage University routing and middleware
 */
 app.use('/api/v1/university', uni);
+
+/**
+ * Manage University routing and middleware
+*/
+app.use('/api/v1/call', call);
 
 /* Default 404 handler */
 app.use((req, res) => {

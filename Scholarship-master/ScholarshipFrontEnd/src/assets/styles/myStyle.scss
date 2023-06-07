@@ -1,0 +1,183 @@
+.fx-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .center {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+  }
+  
+  .content {
+    height: 100%;
+  }
+  
+  .footer {
+    position:fixed;
+    left:0px;
+    bottom:0%;
+    width:100%;
+    background:#fff2f6;
+  }
+  
+  
+  mat-toolbar {
+    box-shadow: 1px 0px 10px rgba(0, 0, 0, 0.5);
+    &.topbar {
+      padding: 0px 15px;
+    }
+    .navbar-header {
+      text-align: center;
+      .navbar-brand {
+        display: flex;
+        line-height: 18px;
+        align-items: center;
+        .dark-logo {
+          display: none;
+        }
+        b {
+          margin-right: 5px;
+        }
+      }
+    }
+  
+    .profile-pic {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+    }
+  }
+  /*******************
+   Topbar
+  *******************/
+  .topbar {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .margin {
+    margin: 10px;
+  }
+  
+  .rightMargin {
+    margin: 10px;
+  }
+  
+  .topMargin {
+    margin-top: 10px;
+  }
+  
+  .center {
+    justify-content: center;
+  }
+  
+  .leftMargin {
+    margin-left: 15px;
+  }
+  
+  .right {
+    background-color: transparent;
+    padding: 0 50px;
+    height: 20px;
+  }
+  
+  .flexible {
+    max-width: 100%;
+  }
+  
+  .responsiveText{
+    font-size: 1vw;
+  }
+  
+  .setRight {
+    justify-self: flex-end;
+    margin-right: 1px;
+  }
+  
+  .full {
+    width: 100%;
+  }
+  
+  .mediumWidth {
+    width: 50%;
+  }
+  
+  .fx-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 2%;
+  }
+  
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .example-sidenav-container {
+    flex: 1;
+  }
+  
+  .example-sidenav-container {
+    flex: 1 0 auto;
+  }
+  
+  .example-list {
+    max-width: 100%;
+    width: 100%;
+    min-height: 60px;
+    display: block;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .example-box {
+    padding: 20px 10px;
+    border-bottom: solid 1px #ccc;
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    cursor: move;
+    background: white;
+    font-size: 14px;
+  }
+  
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .example-box:last-child {
+    border: none;
+  }
+  
+  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .windowSize{
+    width: 80%;
+  }

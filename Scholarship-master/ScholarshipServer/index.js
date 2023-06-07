@@ -7,11 +7,12 @@ const dotenv = require('dotenv').config();
  */
 const port = process.env.PORT || 8080;
 
+DB_URL="mongodb+srv://user:user@blockchaindb.8mkz91z.mongodb.net/OperaDB?retryWrites=true&w=majority"
 /**
  * Configure mongoose
  */
 // mongoose.Promise = global.Promise;
-app.locals.db = mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+app.locals.db = mongoose.connect(DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
 .then ( () => {
     
     console.log("Connected to Database");
