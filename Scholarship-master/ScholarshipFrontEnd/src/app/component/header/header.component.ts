@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, lastValueFrom, map, of} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
+import Web3 from 'web3';
 
 
 @Component({
@@ -14,51 +15,66 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class HeaderComponent {
   session = sessionStorage
   hide: boolean = true;
+  web3: any;
 
   constructor(private router: Router, private http: HttpClient, private activatedRoute: ActivatedRoute) {
-
+    //this.web3 = new Web3("http://127.0.0.1:7545");
   }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
-      if(params['username'] != undefined) {
-        this.session.setItem("username", params['username']);
-        this.session.setItem("token", params['token']);
+      if(params['address'] != undefined) {
+        this.session.setItem("address", params['address']);
+        this.session.setItem("fiscalCode", params['fiscalCode']);
         this.router.navigateByUrl("/");
       }
     });
   }
 
-  async login(username: string, psw: string){
-    // @ts-ignore
-    //document.getElementById("loginErrorMessage").style.display = 'none';
-    const body = {
-      "username": username,
-      "password": psw
-    };
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    await lastValueFrom(this.http.post<any>('http://localhost:12345/v1/users/login', body, {headers: headers}).pipe(map(data => {
-      this.session.setItem("username", data.user.username);
-      this.session.setItem("token", data.user.token);
-    }),catchError(error => {
-      let errore = error.error.message;
-      if(errore == undefined){
-        errore = "Server error";
+  async connectToMetamask(){
+    let ethereum = (window as any).ethereum;
+    if(typeof ethereum !== 'undefined'){
+      console.log("MetaMask is installed");
+    }
+    let accountAddress = "";
+    if(ethereum){
+      this.web3 = ethereum;
+      try{
+        ethereum.request({ method: 'eth_requestAccounts' }).then((address: any) => {
+          accountAddress = address[0];
+          console.log("Account connected: ", accountAddress);
+        });
+      } catch(error){
+        console.error("User denied account access");
       }
-      // @ts-ignore
-      //document.getElementById("loginErrorMessage").style.display = 'block';
-      // @ts-ignore
-      //document.getElementById("loginErrorMessage")?.innerHTML = errore;
-      return of([]);
-    })));
+    }
+    return accountAddress;
   }
 
-  async loginGoogle(){
-    window.location.href = 'http://localhost:12345/v1/users/auth/google';
+  async loginMetamask(){
+    let address = await this.connectToMetamask();
+    if(address != ""){
+      const body = {
+        "address": address,
+      };
+      const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+      await lastValueFrom(this.http.post<any>('http://localhost:12345/v1/users/login', body, {headers: headers}).pipe(map(data => {
+        this.session.setItem("address", data.user.address);
+        this.session.setItem("fiscalCode", data.user.fiscalCode);
+      }),catchError(error => {
+        let errore = error.error.message;
+        if(errore == undefined){
+          errore = "Server error";
+        }
+        return of([]);
+      })));
+    } else {
+      alert("Error, not able to connect to metamask");
+    }
   }
 
   logout(){
-    this.session.removeItem("username");
-    this.session.removeItem("token");
+    this.session.removeItem("address");
+    this.session.removeItem("fiscalCode");
   }
 }
