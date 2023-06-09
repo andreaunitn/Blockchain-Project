@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, lastValueFrom, map, of} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
-import Web3 from 'web3';
+
 
 
 @Component({
@@ -15,10 +15,8 @@ import Web3 from 'web3';
 export class HeaderComponent {
   session = sessionStorage
   hide: boolean = true;
-  web3: any;
 
   constructor(private router: Router, private http: HttpClient, private activatedRoute: ActivatedRoute) {
-    //this.web3 = new Web3("http://127.0.0.1:7545");
   }
 
   ngOnInit() {
@@ -36,23 +34,23 @@ export class HeaderComponent {
     if(typeof ethereum !== 'undefined'){
       console.log("MetaMask is installed");
     }
-    let accountAddress = "";
+    let address = "";
     if(ethereum){
-      this.web3 = ethereum;
       try{
-        ethereum.request({ method: 'eth_requestAccounts' }).then((address: any) => {
-          accountAddress = address[0];
-          console.log("Account connected: ", accountAddress);
+        ethereum.request({ method: 'eth_requestAccounts' }).then((addressMetamask: any) => {
+          address = addressMetamask[0];
+          console.log("Account connected: ", address);
+          this.login(address);
         });
       } catch(error){
         console.error("User denied account access");
       }
-    }
-    return accountAddress;
+    }    
+    
   }
 
-  async loginMetamask(){
-    let address = await this.connectToMetamask();
+  async login(address: string){
+    console.log("CI SONO");
     if(address != ""){
       const body = {
         "address": address,
@@ -68,8 +66,6 @@ export class HeaderComponent {
         }
         return of([]);
       })));
-    } else {
-      alert("Error, not able to connect to metamask");
     }
   }
 
