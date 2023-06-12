@@ -88,6 +88,32 @@ router.post('/login', async function (req, res) {
 	});
 });
 
+// ---------------------------------------------------------
+// route to get personal information
+// ---------------------------------------------------------
+router.post('/loginAdmin', async function (req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+	res.setHeader('Access-Control-Allow-Credentials', true);
+	if (!req.body.username || !req.body.psw) {
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters.' });
+		return;
+	}
+
+	if(req.body.username != "admin" || req.body.psw != "admin"){
+		res.status(404).json({
+			success: false,
+			message: 'Wrong username or password'
+		});
+		return;
+	}
+	
+	res.status(200).json({
+		username: "admin"
+	});
+});
+
 router.post('/signUp', async function (req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

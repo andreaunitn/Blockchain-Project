@@ -1,0 +1,42 @@
+<div class="example-full-width">
+    <div class="center" style="width:100%">
+      <form class="example-list">
+        <h1 style="text-align: center;">New call form</h1><br>
+        <h3 style="text-align: center"><b style="color: red">{{errorMessage}}</b></h3>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label> Name: </mat-label>
+            <textarea matInput  id="name" #name placeholder="Name" required></textarea>
+          </mat-form-field><br>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label> Description: </mat-label>
+            <textarea matInput  id="description" #description placeholder="Description" required></textarea>
+          </mat-form-field><br>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label> ISEE: </mat-label>
+            <input matInput type="number" [min]="0"  id="ISEE" #ISEE value="50000" required>
+          </mat-form-field><br>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label> Region of residence: </mat-label>
+            <textarea matInput  id="residenceRegion" #residenceRegion placeholder="Region of residence" required></textarea>
+          </mat-form-field><br>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label> Credits: </mat-label>
+            <input matInput type="number" id="credits" [min]="0" [max]="300" value="300" #credits required>
+          </mat-form-field><br>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label> Average rating: </mat-label>
+            <input matInput type="number" id="averageRating" [min]="0" max="30" value="30" #averageRating placeholder="Average Rating" required>
+          </mat-form-field><br>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label> Birth year: </mat-label>
+            <input matInput type="number" id="birthYear" #birthYear value="2000" required>
+          </mat-form-field><br>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label> End date: </mat-label>
+            <textarea matInput  id="endDate" #endDate placeholder="End date" required></textarea>
+          </mat-form-field><br>
+        <span style="padding-left: 45%"></span>
+        <button mat-raised-button color="primary" (click)="add(name.value, description.value, $any(ISEE.value), residenceRegion.value, $any(credits.value), $any(averageRating.value), $any(birthYear.value), $any(endDate.value), $event)">Add</button>
+      </form><br>
+    </div>
+  </div>

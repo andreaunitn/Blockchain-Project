@@ -23,11 +23,13 @@ import {MatListModule} from '@angular/material/list';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIcon, MatIconModule} from '@angular/material/icon'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { CallAdminComponent } from './component/callAdmin/callAdmin.component';
+import { AdminLoginComponent } from './component/adminLogin/adminLogin.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent, HomeComponent, SignUpComponent
+    HeaderComponent, HomeComponent, SignUpComponent, CallAdminComponent, AdminLoginComponent
   ],
   imports: [
     BrowserModule,

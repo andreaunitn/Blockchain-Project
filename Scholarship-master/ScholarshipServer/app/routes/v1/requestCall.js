@@ -22,7 +22,7 @@ router.post('', async function (req, res) {
 
 	// find the user information 
 	let request = await RequestCall.findOne({"address": req.body.address, "name": req.body.name});
-	if (request != null) {
+	if (request != null || request.result == true) {
 		res.status(409).json({
 			success: false,
 			message: 'Request already done'
@@ -35,9 +35,7 @@ router.post('', async function (req, res) {
 
   let user = (await requestPromise("http://localhost:8080/api/v1/user/getAllInfo?address=" + req.body.address)
   .then(response => JSON.parse(response)));
-
-  console.log(call);
-  console.log(user);
+  user = user.user;
 
   let requestResult = true;
 
@@ -49,9 +47,9 @@ router.post('', async function (req, res) {
   var message = "Request in list";
 
   if(requestResult == false){
-    message = "Requirements not satisfied";   
+    message = "Requirements not satisfied";  
   }
-
+  
   const newRequest = await RequestCall.create({
     name: req.body.name, 
     address: req.body.address, 
