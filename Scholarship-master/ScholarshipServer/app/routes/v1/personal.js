@@ -29,6 +29,8 @@ router.get('', async function (req, res) {
 
 	res.status(200).json({
 		fiscalCode: personal.fiscalCode,
+		name: personal.name,
+		surname: personal.surname,
 		birthYear: personal.birthYear,
 		residenceRegion: personal.residenceRegion,
 		self: "/api/v1/personal/" + personal.fiscalCode

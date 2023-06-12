@@ -30,6 +30,7 @@ export class HeaderComponent {
   }
 
   async connectToMetamask(){
+    /*
     let ethereum = (window as any).ethereum;
     if(typeof ethereum !== 'undefined'){
       console.log("MetaMask is installed");
@@ -45,21 +46,23 @@ export class HeaderComponent {
       } catch(error){
         console.error("User denied account access");
       }
-    }    
-    
+    }  */
+    this.login("0x152483");  
   }
 
   async login(address: string){
-    console.log("CI SONO");
     if(address != ""){
       const body = {
         "address": address,
       };
+      this.session.setItem("address", address);
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-      await lastValueFrom(this.http.post<any>('http://localhost:12345/v1/users/login', body, {headers: headers}).pipe(map(data => {
-        this.session.setItem("address", data.user.address);
-        this.session.setItem("fiscalCode", data.user.fiscalCode);
+      await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/user/login', body, {headers: headers}).pipe(map(data => {
+        this.session.setItem("fiscalCode", data.fiscalCode);
       }),catchError(error => {
+        if(error.error.success == false){
+          this.router.navigateByUrl('/signUp');
+        }
         let errore = error.error.message;
         if(errore == undefined){
           errore = "Server error";

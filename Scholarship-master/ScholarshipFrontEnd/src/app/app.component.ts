@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ScholarshipFrontEnd';
+
+  constructor(){
+    sessionStorage.removeItem("address");
+    sessionStorage.removeItem("fiscalCode");
+  }
 }

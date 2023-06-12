@@ -1,0 +1,14 @@
+<div class="example-full-width">
+    <div class="center" style="width:100%">
+      <form class="example-list">
+        <h1 style="text-align: center;">Signup form</h1><br>
+        <h3 style="text-align: center"><b style="color: red">{{errorMessage}}</b></h3>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Fiscal code: </mat-label>
+            <textarea matInput  id="fiscalCode" #fiscalCode placeholder="Fiscal code" required></textarea>
+          </mat-form-field><br>
+        <span style="padding-left: 45%"></span>
+        <button mat-raised-button color="primary" (click)="signup(fiscalCode.value, $event)">Signup</button>
+      </form><br>
+    </div>
+  </div>

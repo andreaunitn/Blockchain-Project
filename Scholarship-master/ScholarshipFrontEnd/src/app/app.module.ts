@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app.routes';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './component/header/header.component';
 import { HomeComponent } from './component/home/home.component';
+import { SignUpComponent } from './component/signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -26,7 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent, HomeComponent
+    HeaderComponent, HomeComponent, SignUpComponent
   ],
   imports: [
     BrowserModule,

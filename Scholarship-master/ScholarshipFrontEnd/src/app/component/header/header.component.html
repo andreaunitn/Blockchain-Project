@@ -5,7 +5,7 @@
     <span style="padding-left: 30px;"></span>
     <button *ngIf="session.getItem('token') != undefined" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/history"><h3>History</h3></button>
     <span class="fx-spacer"></span>
-    <a *ngIf="session.getItem('username') == null; then notLoggedIn else loggedIn"> </a>
+    <a *ngIf="session.getItem('fiscalCode') == null; then notLoggedIn else loggedIn"> </a>
 </mat-toolbar>
   
   <ng-template #notLoggedIn>

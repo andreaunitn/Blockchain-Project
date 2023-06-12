@@ -13,6 +13,7 @@ import { Call } from 'src/app/classes/Calls';
 export class HomeComponent implements OnInit{
     calls: Call[] | undefined;
     callSelected: Call | undefined;
+    session = sessionStorage;
 
   constructor(private router: Router, private _ActivatedRoute: ActivatedRoute, private http: HttpClient) {
 
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit{
     // @ts-ignore
     document.getElementById("callInfoModule").style.display = 'none';
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/call`, {headers: headers}).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/call/all`, {headers: headers}).pipe(map(data => {
         let i;
         this.calls = new Array(data.length);
         console.log(data);
@@ -58,6 +59,26 @@ export class HomeComponent implements OnInit{
         this.callSelected = this.calls[i];
       }
     }
+  }
+
+  async applyForCall(){
+      let callName = this.callSelected?.name;
+      let address = this.session.getItem("address");
+
+      const body = {
+        "address": address,
+        "name": callName
+      };
+      const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+      await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/requestCall', body, {headers: headers}).pipe(map(data => {
+        
+      }),catchError(error => {
+        let errore = error.error.message;
+        if(errore == undefined){
+          errore = "Server error";
+        }
+        return of([]);
+      })));
   }
 
   callDetail(event: any) {

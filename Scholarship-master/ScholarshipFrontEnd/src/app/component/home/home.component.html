@@ -25,7 +25,9 @@
         <div id="callInfoModule" style="display: none;">
             <h4>Call Detail</h4>
             <div id="callInfo"></div>
-            <button *ngIf="verifyEndDate() == true"> Apply </button>
+            <br>
+            <h3 style="color:red" *ngIf="verifyEndDate() == true && session.getItem('fiscalCode') == null">Login to apply</h3>
+            <button *ngIf="verifyEndDate() == true && session.getItem('fiscalCode') != null" (click)="applyForCall()"> Apply </button>
             <button *ngIf="verifyEndDate() == false"> View List </button>
             <br>
         </div>
