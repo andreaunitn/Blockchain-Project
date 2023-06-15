@@ -23,6 +23,12 @@ async function connectToMetaMask() {
 
 async function deployContract() {
 
+  if (myAccountAddress==='')
+    {
+      alert("Not connected to MetaMask!");
+      return;
+    }
+
   fetch('http://localhost:3000/contracts/MyContract.json', {
        method: 'GET',
        headers: {
@@ -33,7 +39,7 @@ async function deployContract() {
        .then(response => {
          var bytecode = response.bytecode
 
-         let encodedArguments =web3.eth.abi.encodeParameter('string', 'cancher').substring(2);
+         let encodedArguments =web3.eth.abi.encodeParameter('string', 'default').substring(2);
 
          ethereum.request({
            method: 'eth_sendTransaction', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
@@ -58,6 +64,12 @@ async function deployContract() {
 
 
 async function getValueFromSmartConctract() {
+
+  if (myAccountAddress==='')
+    {
+      alert("Not connected to MetaMask!");
+      return;
+    }
 
   fetch('http://localhost:3000/contracts/MyContract.json', {
        method: 'GET',
@@ -92,6 +104,12 @@ async function getValueFromSmartConctract() {
 }
 
 async function setValueOfSmartConctract() {
+
+  if (myAccountAddress==='')
+    {
+      alert("Not connected to MetaMask!");
+      return;
+    }
 
   fetch('http://localhost:3000/contracts/MyContract.json', {
        method: 'GET',
@@ -128,6 +146,12 @@ async function setValueOfSmartConctract() {
 
 async function getStudentFromSmartConctract(address) {
 
+  if (myAccountAddress==='')
+    {
+      alert("Not connected to MetaMask!");
+      return;
+    }
+
   fetch('http://localhost:3000/contracts/MyContract.json', {
        method: 'GET',
        headers: {
@@ -140,7 +164,7 @@ async function getStudentFromSmartConctract(address) {
 
          const contract = new web3.eth.Contract(abi, receiverAddress)
 
-         let f = contract.methods.getArrayValue(address).encodeABI();
+         let f = contract.methods.getStudent(address).encodeABI();
 
          ethereum.request({
            method: 'eth_call', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
@@ -149,7 +173,7 @@ async function getStudentFromSmartConctract(address) {
              to: receiverAddress,
              data: f
            }]
-         }).then((res)=>{
+         }).then(async (res)=>{
 
            const result = web3.eth.abi.decodeParameter('tuple(string,string,string,uint256,uint256)', res);
 
@@ -163,13 +187,28 @@ async function getStudentFromSmartConctract(address) {
 
           console.log(student);
 
+          //iteration test
+          const keys = await contract.methods.getKeys().call();
+          console.log(keys.length)
+          for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            const value = await contract.methods.getStudent(key).call();
+            console.log(`Key: ${key}, Value: ${value}`);
+          }
+
          }).catch((error)=>{
            console.log(error)
          })
        })
 }
 
-async function addStudentToContract(name, surname, taxcode, isee, crediti, address) {
+async function addStudentToSmartContract(name, surname, taxcode, isee, crediti, address) {
+
+  if (myAccountAddress==='')
+    {
+      alert("Not connected to MetaMask!");
+      return;
+    }
 
   fetch('http://localhost:3000/contracts/MyContract.json', {
        method: 'GET',
@@ -195,7 +234,48 @@ async function addStudentToContract(name, surname, taxcode, isee, crediti, addre
          }).then((res)=>{
 
            const result = web3.eth.abi.decodeParameter('uint',res)
-           console.log('Transaction hash:', result.transactionHash);
+           console.log('Transaction hash:', result);
+
+         }).catch((error)=>{
+           console.log(error)
+         })
+       })
+}
+
+async function rankStudents() {
+
+  if (myAccountAddress==='')
+    {
+      alert("Not connected to MetaMask!");
+      return;
+    }
+
+  fetch('http://localhost:3000/contracts/MyContract.json', {
+       method: 'GET',
+       headers: {
+           'Accept': 'application/json',
+       },
+   })
+       .then(response => response.json())
+       .then(response => {
+         var abi = response.abi
+
+         const contract = new web3.eth.Contract(abi, receiverAddress)
+
+         let f = contract.methods.rankStudents().encodeABI();
+
+         ethereum.request({
+           method: 'eth_call', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
+           params: [{
+             from: myAccountAddress,
+             to: receiverAddress,
+             data: f
+           }]
+         }).then(async (res)=>{
+
+          const result = web3.eth.abi.decodeParameter('uint256', res);
+
+          console.log(result)
 
          }).catch((error)=>{
            console.log(error)
