@@ -175,7 +175,7 @@ async function getStudentFromSmartConctract(address) {
            }]
          }).then(async (res)=>{
 
-           const result = web3.eth.abi.decodeParameter('tuple(string,string,string,uint256,uint256)', res);
+          const result = web3.eth.abi.decodeParameter('tuple(string,string,string,uint256,uint256,uint256,uint256)', res);
 
           const student = {
             name: result[0],
@@ -183,6 +183,8 @@ async function getStudentFromSmartConctract(address) {
             taxcode: result[2],
             isee: result[3],
             crediti: result[4],
+            year: result[5],
+            score: result[6]
           };
 
           console.log(student);
@@ -202,7 +204,7 @@ async function getStudentFromSmartConctract(address) {
        })
 }
 
-async function addStudentToSmartContract(name, surname, taxcode, isee, crediti, address) {
+async function addStudentToSmartContract(name, surname, taxcode, isee, crediti, year, address) {
 
   if (myAccountAddress==='')
     {
@@ -222,7 +224,7 @@ async function addStudentToSmartContract(name, surname, taxcode, isee, crediti, 
 
          const contract = new web3.eth.Contract(abi, receiverAddress)
 
-         const addPersonData  = contract.methods.addStudent(name, surname, taxcode, isee, crediti, address).encodeABI();
+         const addPersonData  = contract.methods.addStudent(name, surname, taxcode, isee, crediti, year, address).encodeABI();
 
          ethereum.request({
            method: 'eth_sendTransaction', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
