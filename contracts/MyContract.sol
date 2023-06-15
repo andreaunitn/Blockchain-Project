@@ -12,7 +12,7 @@ contract MyContract {
         string taxcode;
         uint256 isee;
         uint256 crediti;
-        uint256 year; //supposd to go from 1 to 3 (anno della triennale per cui fai richiesta della borsa)
+        uint256 year; //supposed to go from 1 to 3 (anno della triennale per cui fai richiesta della borsa)
         uint256 score;
     }
 
@@ -81,24 +81,24 @@ contract MyContract {
         return score;
     }
 
-    function rankStudents() public returns (uint256) {
+    function rankStudents() public view returns (address[] memory){
 
-        uint swap=0;
+        address[] memory sortedArray = keys;
+        uint len = sortedArray.length;
 
-        // Perform sorting based on the parameter (ascending order)
-        for (uint256 i = 0; i < keys.length - 1; i++) {
-            for (uint256 j = 0; j < keys.length - i - 1; j++) {
-                if (mappingStudents[keys[j]].isee > mappingStudents[keys[j + 1]].isee) {
-                    swap++;
-                    Student memory temp = mappingStudents[keys[j]];
-                    mappingStudents[keys[j]] = mappingStudents[keys[j + 1]];
-                    mappingStudents[keys[j + 1]] = temp;
+        // Order students' addresses by looking at their score
+        for (uint i = 0; i < len - 1; i++) {
+            for (uint j = i + 1; j < len; j++) {
+                if (mappingStudents[sortedArray[i]].score < mappingStudents[sortedArray[j]].score) {
+                    // Swap elements
+                    address temp = sortedArray[i];
+                    sortedArray[i] = sortedArray[j];
+                    sortedArray[j] = temp;
                 }
             }
         }
 
-        return swap;
+        return sortedArray;
     }
-
 
 }

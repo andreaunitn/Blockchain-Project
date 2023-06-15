@@ -275,9 +275,16 @@ async function rankStudents() {
            }]
          }).then(async (res)=>{
 
-          const result = web3.eth.abi.decodeParameter('uint256', res);
+          const result = web3.eth.abi.decodeParameter('address[]', res);
 
           console.log(result)
+          console.log(result.length)
+
+          for (let i = 0; i < result.length; i++) {
+            const key = result[i];
+            const value = await contract.methods.getStudent(key).call();
+            console.log(`Key: ${key}, Value: ${value}`);
+          }
 
          }).catch((error)=>{
            console.log(error)
