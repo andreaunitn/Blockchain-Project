@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
-    <button style="color:white; border: 0px; background-color:#3f51b5" routerLink="/"><h3>1</h3></button>
+    <button style="color:white; border: 0px; background-color:#3f51b5" routerLink="/"><h3>HOME</h3></button>
     <span style="padding-left: 30px;"></span>
-    <button style="color:white; border: 0px; background-color:#3f51b5" routerLink="/"><h3>2</h3></button>
+    <button *ngIf="session.getItem('address') != null" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/requestCallByUser"><h3>Request call made</h3></button>
     <span style="padding-left: 30px;"></span>
     <button *ngIf="session.getItem('token') != undefined" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/history"><h3>History</h3></button>
     <span class="fx-spacer"></span>

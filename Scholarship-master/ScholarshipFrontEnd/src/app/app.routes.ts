@@ -6,12 +6,15 @@ import { signUpGuard } from "./guards/signUpGuard.component";
 import { CallAdminComponent } from "./component/callAdmin/callAdmin.component";
 import { adminGuard } from "./guards/adminGuard.component";
 import { AdminLoginComponent } from "./component/adminLogin/adminLogin.component";
+import { RequestCallByUserComponent } from "./component/requestCallByUser/requestCallByUser.component";
+import { loggedGuard } from "./guards/loggedGuard.component";
 
 
 // @ts-ignore
 export const appRoutes: Routes =  [
   { path: "home", component: HomeComponent},
   { path: "signUp", component: SignUpComponent, canActivate: [signUpGuard]},
+  { path: "requestCallByUser", component: RequestCallByUserComponent, canActivate: [loggedGuard]},
   { path: "callAdmin", component: CallAdminComponent, canActivate: [adminGuard]},
   { path: "adminLogin", component: AdminLoginComponent},
   { path: "", redirectTo: "home", pathMatch: "full" }

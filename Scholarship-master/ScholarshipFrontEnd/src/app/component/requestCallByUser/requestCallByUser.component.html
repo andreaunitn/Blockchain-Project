@@ -1,0 +1,31 @@
+<style>
+    .requestCallList {
+        float: left;
+        margin-left: 1%;
+        width: 49%;
+        height: 100%;
+    }
+
+    .requestCall {
+        float: right;
+        margin-right: 1%;
+        width: 49%;
+    }
+</style>
+
+<div>
+    <div class="requestCallList">
+        <h2>REQUEST CALL </h2>
+        <ul class="list-group" *ngFor="let element of requestCalls">
+            <li class="list-group-item" style="width:500px;" (click)="requestCallDetail($event)" id="{{element.name}}">
+                {{element.name}} </li>
+        </ul>
+    </div>
+    <div class="requestCall">
+        <div id="requestCallInfoModule" style="display: none;">
+            <h4>Request Call Detail</h4>
+            <div id="requestCallInfo"></div>
+            <br>
+        </div>
+    </div>
+</div>

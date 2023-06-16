@@ -25,11 +25,12 @@ import {MatIcon, MatIconModule} from '@angular/material/icon'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CallAdminComponent } from './component/callAdmin/callAdmin.component';
 import { AdminLoginComponent } from './component/adminLogin/adminLogin.component';
+import { RequestCallByUserComponent } from './component/requestCallByUser/requestCallByUser.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent, HomeComponent, SignUpComponent, CallAdminComponent, AdminLoginComponent
+    HeaderComponent, HomeComponent, SignUpComponent, CallAdminComponent, AdminLoginComponent, RequestCallByUserComponent
   ],
   imports: [
     BrowserModule,

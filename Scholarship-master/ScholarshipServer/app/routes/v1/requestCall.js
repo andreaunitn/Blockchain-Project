@@ -7,6 +7,35 @@ const RequestCall = require('../../models/requestCall');
 const verifyToken = require('../../middleware/auth');
 const requestPromise = require('request-promise');
 
+
+// ---------------------------------------------------------
+// route to get request call of a user
+// ---------------------------------------------------------
+router.get('/byUser', async function (req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+	res.setHeader('Access-Control-Allow-Credentials', true);
+
+	if (!req.query.address) {
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters.' });
+		return;
+	}
+
+	// find the user information 
+	let requestCalls = await RequestCall.find({"address": req.query.address});
+	res.status(200).json(requestCalls.map(rC => {
+		return {
+      name: rC.name, 
+      address: rC.address, 
+      result: rC.result,
+      dateTime: rC.dateTime,
+      message: rC.message,
+			self: "/api/v1/requestCalls/byUser/" + rC.address
+		}
+	}));
+});
+
 // ---------------------------------------------------------
 // route to set new request call
 // ---------------------------------------------------------
