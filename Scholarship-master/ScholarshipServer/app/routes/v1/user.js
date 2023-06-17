@@ -149,9 +149,9 @@ router.post('/signUp', async function (req, res) {
 	}
 
 	res.status(200).json({
-		address: user.address,
-		fiscalCode: user.fiscalCode,
-		self: "/api/v1/user/" + user.fiscalCode
+		address: newUser.address,
+		fiscalCode: newUser.fiscalCode,
+		self: "/api/v1/user/" + newUser.fiscalCode
 	});
 });
 

@@ -30,6 +30,7 @@ export class HeaderComponent {
   }
 
   async connectToMetamask(){
+    this.session.removeItem("admin");
     /*
     let ethereum = (window as any).ethereum;
     if(typeof ethereum !== 'undefined'){
@@ -75,5 +76,6 @@ export class HeaderComponent {
   logout(){
     this.session.removeItem("address");
     this.session.removeItem("fiscalCode");
+    this.session.removeItem("admin");
   }
 }

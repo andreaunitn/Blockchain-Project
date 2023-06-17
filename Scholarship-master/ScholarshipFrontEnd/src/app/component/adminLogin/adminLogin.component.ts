@@ -26,6 +26,8 @@ export class AdminLoginComponent implements OnInit{
 
   async login(username: string, psw: string, event:any){
     event.preventDefault();
+    this.session.removeItem("address");
+    this.session.removeItem("fiscalCode");
     this.errorMessage = "";
 
     if(username == undefined || username == "" || psw == undefined || psw == ""){
@@ -40,7 +42,7 @@ export class AdminLoginComponent implements OnInit{
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/user/loginAdmin', body, {headers: headers}).pipe(map(data => {
         this.session.setItem("admin", data.admin);
-        this.router.navigateByUrl("/callAdmin");
+        this.router.navigateByUrl("/");
     }),catchError(error => {
       if(error.error.message == undefined){
         this.errorMessage = "Server error";

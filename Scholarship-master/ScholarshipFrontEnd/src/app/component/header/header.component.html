@@ -1,20 +1,34 @@
 <mat-toolbar color="primary">
     <button style="color:white; border: 0px; background-color:#3f51b5" routerLink="/"><h3>HOME</h3></button>
-    <span style="padding-left: 30px;"></span>
-    <button *ngIf="session.getItem('address') != null" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/requestCallByUser"><h3>Request call made</h3></button>
-    <span style="padding-left: 30px;"></span>
-    <button *ngIf="session.getItem('token') != undefined" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/history"><h3>History</h3></button>
+    <span style="padding-left: 40px;"></span>
+    <button *ngIf="session.getItem('address') != null" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/requestCallByUser"><h3>MY REQUESTS</h3></button>
+    <button *ngIf="session.getItem('admin') != null" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/callAdmin"><h3>ADD CALL</h3></button>
     <span class="fx-spacer"></span>
     <a *ngIf="session.getItem('fiscalCode') == null; then notLoggedIn else loggedIn"> </a>
+    <a *ngIf="session.getItem('admin') == null; then adminNotLoggedIn else adminLoggedIn"> </a>
 </mat-toolbar>
   
   <ng-template #notLoggedIn>
-    <button mat-raised-button color="indigo" style="float:right; margin-right: 10%" (click)="connectToMetamask()">Login with metamask</button>
+    <div ngbDropdown>
+      <button mat-raised-button style=" background-color: white;float:right; margin-right: 15%; color:#3f51b5" (click)="connectToMetamask()">Login with metamask</button>
+    </div>
+  </ng-template>
+
+  <ng-template #adminNotLoggedIn>
+    <div ngbDropdown>
+      <button mat-raised-button style="background-color: white;float:right; margin-right: 10%; color:#3f51b5" routerLink="/adminLogin">Admin Login</button>
+    </div>
+  </ng-template>
+
+  <ng-template #adminLoggedIn>
+    <div ngbDropdown>
+      <button mat-raised-button style="background-color: white;float:right; margin-right: 10%; color:#3f51b5" (click)="logout()">Logout</button>
+    </div>
   </ng-template>
   
   <ng-template #loggedIn>
     <div ngbDropdown>
-      <button mat-raised-button [matMenuTriggerFor]="profile" style="background-color: white; color: #3f51b5; border:0px;"> {{session.getItem("fiscalCode")}} </button>
+      <button mat-raised-button [matMenuTriggerFor]="profile" style="background-color: white; float:right; margin-right: 20%; color: #3f51b5; "> {{session.getItem("fiscalCode")}} </button>
       <mat-menu #profile="matMenu" class="mymegamenu">
         <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon> Logout </button>

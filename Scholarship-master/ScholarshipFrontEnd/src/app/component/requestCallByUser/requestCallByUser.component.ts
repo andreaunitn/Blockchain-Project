@@ -70,14 +70,17 @@ export class RequestCallByUserComponent implements OnInit{
 
       // @ts-ignore
       requestCallInfo = "<b>Call:</b> " + this.requestCallSelected.name + "<br><b>Message:</b> " + this.requestCallSelected?.message + "<br>";
-      // @ts-ignore
-      requestCallInfo += "<b>Date:</b> " + this.requestCallSelected?.dateTime + "<br>";
       requestCallInfo += "<b>Result:</b> ";
       if(this.requestCallSelected?.result == true){
         requestCallInfo += "Accepted";
       } else {
         requestCallInfo += "Rejected";
       }
+
+      // @ts-ignore
+      let eD = new Date(this.requestCallSelected?.dateTime);
+      // @ts-ignore
+      requestCallInfo += "<br><b>Request date: </b> " + eD.getDate() + "/" + (eD.getMonth() + 1) + "/" + eD.getFullYear();
       
       // @ts-ignore  
       document.getElementById("requestCallInfo").innerHTML = requestCallInfo;

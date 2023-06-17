@@ -27,8 +27,7 @@ export class CallAdminComponent implements OnInit{
   async add(name:String, description: string, ISEE: number, residenceRegion: string, credits:number, averageRating: number, birthYear: string, endDate: Date, event:any){
     event.preventDefault();
     this.errorMessage = "";
-
-
+    
     if(name == undefined || name == "" || description == undefined || description == "" || ISEE == undefined
         || residenceRegion == undefined || residenceRegion == "" || credits == undefined
         || averageRating == undefined || birthYear == undefined || endDate == undefined){
@@ -44,7 +43,7 @@ export class CallAdminComponent implements OnInit{
       "credits": credits,
       "averageRating": averageRating,
       "birthYear": birthYear,
-      "endDate": endDate
+      "endDate": new Date(endDate)
     };
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/call', body, {headers: headers}).pipe(map(data => {
