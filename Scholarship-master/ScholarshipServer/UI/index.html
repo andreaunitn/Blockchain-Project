@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <title>BorsaDiStudioChain</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7/web3.js"></script>
+  </head>
+  <body style="background-color:#c6c5d4 ">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
+          <h1 class="text-center">DApp - BorsaDiStudioChain</h1>
+          <hr/>
+          <br/>
+          <button id="connect" onclick="connectToMetaMask()">Connect</button>
+          <br>
+            <button id="deploy" onclick="deployContract()">Deploy Contract</button>
+            <br>
+              <button id="getValue" onclick="getValueFromSmartConctract()">get</button>
+              <button id="setValue" onclick="setValueOfSmartConctract()">increment</button>
+        </div>
+      </div>
+      <hr>
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
+          <label>Nome</label><input id="name" type="text"><br>
+          <label>Cognome</label><input id="surname" type="text"><br>
+          <label>TaxCode</label><input id="taxcode" type="text"><br>
+          <label>ISEE</label><input id="isee" type="text"><br>
+          <label>Anno</label><input id="year" type="text"><br>
+          <label>Crediti</label><input id="crediti" type="text"><br>
+          <label>address</label><input id="address" type="text"><br>
+          <br>
+          <button id="getStudents" onclick="getStudentFromSmartConctract(document.getElementById('address').value)">Get Students</button>
+          <button id="addStudent" onclick="addStudentToSmartContract(document.getElementById('name').value, document.getElementById('surname').value, document.getElementById('taxcode').value, document.getElementById('isee').value, document.getElementById('crediti').value, document.getElementById('year').value, document.getElementById('address').value)">Add Student</button>
+          <button id="Rank" onclick="rankStudents()" style="background-color:red; color:yellow">Rank</button>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="script.js"></script>
+  </body>
+</html>

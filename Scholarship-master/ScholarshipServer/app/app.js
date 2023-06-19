@@ -3,7 +3,6 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 
-const tokenChecker = require('./utils/tokenGenerator.js');
 const user = require('./routes/v1/user.js');
 const per = require('./routes/v1/personal.js');
 const eco = require('./routes/v1/economic.js');
