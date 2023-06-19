@@ -20,7 +20,7 @@ async function connectToMetaMask() {
         console.log("MetaMask is not installed.");
     }
 }
-
+//
 async function deployContract() {
 
   if (myAccountAddress==='')

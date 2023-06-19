@@ -7,9 +7,6 @@ contract MyContract {
     uint256[] public CREDITS_PER_YEAR = [uint256(0), 45, 85]; //crediti richiesti per onni anno della triennale
 
     struct Student {
-        string name;
-        string surname;
-        string taxcode;
         uint256 isee;
         uint256 crediti;
         uint256 year; //supposed to go from 1 to 3 (anno della triennale per cui fai richiesta della borsa)
@@ -46,15 +43,12 @@ contract MyContract {
     }
 
     function addStudent(
-        string memory _name,
-        string memory _surname,
-        string memory _taxcode,
         uint256 _isee,
         uint256 _crediti,
         uint256 _year,
         address key
     ) public {
-        Student memory newStudent = Student(_name, _surname, _taxcode, _isee, _crediti, _year, uint256(0));
+        Student memory newStudent = Student(_isee, _crediti, _year, uint256(0));
         newStudent.score = computeScore(newStudent);
         mappingStudents[key] = newStudent;
         keys.push(key);
