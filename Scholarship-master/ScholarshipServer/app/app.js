@@ -9,6 +9,9 @@ const eco = require('./routes/v1/economic.js');
 const uni = require('./routes/v1/university.js');
 const call = require('./routes/v1/call.js');
 const requestCall = require('./routes/v1/requestCall.js');
+const { Web3 } = require('web3');
+
+let web3 = new Web3('http://127.0.0.1:7545')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -49,6 +52,8 @@ app.use((req, res) => {
   res.status(404);
   res.json({ error: 'Not found' });
 });
+
+
 
 
 module.exports = app;

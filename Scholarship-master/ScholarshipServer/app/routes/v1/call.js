@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Call = require('../../models/call');
 const verifyToken = require('../../middleware/auth');
-const web3 = new Web3('http://127.0.0.1:7545')
+const { Web3 } = require('web3');
+
+let web3 = new Web3('http://127.0.0.1:7545')
 
 // ---------------------------------------------------------
 // route to get all the calls

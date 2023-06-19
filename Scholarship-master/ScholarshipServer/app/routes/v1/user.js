@@ -109,10 +109,10 @@ router.post('/loginAdmin', async function (req, res) {
 		return;
 	}
 
-	global.operaAddress = req.nody.address;
+	global.operaAddress = req.body.address;
  	console.log("Opera address: ");
  	console.log(operaAddress);
-	
+
 	res.status(200).json({
 		username: "admin"
 	});
@@ -221,7 +221,6 @@ router.get('/getStudent', async function (req, res) {
            console.log(error)
          })
        })
-
-}
+})
 
 module.exports = router;
