@@ -5,6 +5,7 @@ contract MyContract {
 
     uint256 public ISEE_LIMIT = 23600;
     uint256[] public CREDITS_PER_YEAR = [uint256(0), 45, 85]; //crediti richiesti per onni anno della triennale
+    uint256 public BUDGET;
 
     struct Student {
         uint256 isee;
@@ -22,16 +23,16 @@ contract MyContract {
     string public myVariable;
     uint256 public val = 0;
 
-    constructor(string memory initialValue) {
-        myVariable = initialValue;
+    constructor(uint256 budget) {
+        BUDGET = budget;
     }
 
-    function getValue() public view returns (uint256) {
-        return val;
+    function getBudget() public view returns (uint256) {
+        return BUDGET;
     }
 
-    function incrementValue() public {
-        val++;
+    function incrementBudget() public {
+        BUDGET++;
     }
 
     function getKeys() public view returns (address[] memory) {

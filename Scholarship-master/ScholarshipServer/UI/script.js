@@ -20,7 +20,7 @@ async function connectToMetaMask() {
         console.log("MetaMask is not installed.");
     }
 }
-//
+
 async function deployContract() {
 
   if (myAccountAddress==='')
@@ -39,7 +39,7 @@ async function deployContract() {
        .then(response => {
          var bytecode = response.bytecode
 
-         let encodedArguments =web3.eth.abi.encodeParameter('string', 'default').substring(2);
+         let encodedArguments =web3.eth.abi.encodeParameter('uint256', '50000').substring(2);
 
          ethereum.request({
            method: 'eth_sendTransaction', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
@@ -63,7 +63,7 @@ async function deployContract() {
 }
 
 
-async function getValueFromSmartConctract() {
+async function getBudgetFromSmartConctract() {
 
   if (myAccountAddress==='')
     {
@@ -83,7 +83,7 @@ async function getValueFromSmartConctract() {
 
          const contract = new web3.eth.Contract(abi, receiverAddress)
 
-         let f = contract.methods.getValue().encodeABI();
+         let f = contract.methods.getBudget().encodeABI();
 
          ethereum.request({
            method: 'eth_call', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
@@ -103,7 +103,7 @@ async function getValueFromSmartConctract() {
        })
 }
 
-async function setValueOfSmartConctract() {
+async function incrementBudgetOfSmartConctract() {
 
   if (myAccountAddress==='')
     {
@@ -123,7 +123,7 @@ async function setValueOfSmartConctract() {
 
          const contract = new web3.eth.Contract(abi, receiverAddress)
 
-         let f = contract.methods.incrementValue().encodeABI();
+         let f = contract.methods.incrementBudget().encodeABI();
 
          ethereum.request({
            method: 'eth_sendTransaction', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
@@ -175,28 +175,25 @@ async function getStudentFromSmartConctract(address) {
            }]
          }).then(async (res)=>{
 
-          const result = web3.eth.abi.decodeParameter('tuple(string,string,string,uint256,uint256,uint256,uint256)', res);
+          const result = web3.eth.abi.decodeParameter('tuple(uint256,uint256,uint256,uint256)', res);
 
           const student = {
-            name: result[0],
-            surname: result[1],
-            taxcode: result[2],
-            isee: result[3],
-            crediti: result[4],
-            year: result[5],
-            score: result[6]
+            isee: result[0],
+            crediti: result[1],
+            year: result[2],
+            score: result[3]
           };
 
           console.log(student);
 
           //iteration test
-          const keys = await contract.methods.getKeys().call();
-          console.log(keys.length)
-          for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
-            const value = await contract.methods.getStudent(key).call();
-            console.log(`Key: ${key}, Value: ${value}`);
-          }
+          // const keys = await contract.methods.getKeys().call();
+          // console.log(keys.length)
+          // for (let i = 0; i < keys.length; i++) {
+          //   const key = keys[i];
+          //   const value = await contract.methods.getStudent(key).call();
+          //   console.log(`Key: ${key}, Value: ${value}`);
+          // }
 
          }).catch((error)=>{
            console.log(error)
@@ -204,7 +201,7 @@ async function getStudentFromSmartConctract(address) {
        })
 }
 
-async function addStudentToSmartContract(name, surname, taxcode, isee, crediti, year, address) {
+async function addStudentToSmartContract(isee, crediti, year, address) {
 
   if (myAccountAddress==='')
     {
@@ -224,7 +221,7 @@ async function addStudentToSmartContract(name, surname, taxcode, isee, crediti, 
 
          const contract = new web3.eth.Contract(abi, receiverAddress)
 
-         const addPersonData  = contract.methods.addStudent(name, surname, taxcode, isee, crediti, year, address).encodeABI();
+         const addPersonData  = contract.methods.addStudent(isee, crediti, year, address).encodeABI();
 
          ethereum.request({
            method: 'eth_sendTransaction', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc

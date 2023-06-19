@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Call = require('../../models/call');
 const verifyToken = require('../../middleware/auth');
-const web3 = new Web3('http://127.0.0.1:7545')
 
 // ---------------------------------------------------------
 // route to get all the calls
@@ -58,50 +57,6 @@ router.get('', async function (req, res) {
 	});
 });
 
-async function deployContract() {
-
-	const operaAddress = global.operaAddress;
-	console.log(operaAddress);
-
-	if (operaAddress==='')
-	  {
-		alert("Not connected to MetaMask!");
-		return;
-	  }
-  
-	fetch('http://localhost:8080/contracts/MyContract.json', {
-		 method: 'GET',
-		 headers: {
-			 'Accept': 'application/json',
-		 },
-	 })
-		 .then(response => response.json())
-		 .then(response => {
-		   var bytecode = response.bytecode
-  
-		   let encodedArguments =web3.eth.abi.encodeParameter('string', 'default').substring(2);
-  
-		   ethereum.request({
-			 method: 'eth_sendTransaction', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
-			 params: [{
-			   from: operaAddress,
-			   data: bytecode+encodedArguments
-			 }]
-		   }).then((transactionHash)=>{
-			 console.log(transactionHash)
-			 web3.eth.getTransactionReceipt(transactionHash).then((receipt) => {
-			   if (receipt && receipt.contractAddress) {
-				 contractAddress = receipt.contractAddress;
-				 console.log("!!",contractAddress);
-			   }
-			 });
-  
-		   }).catch((error)=>{
-			 console.log(error)
-		   })
-		 })
-  }
-
 // ---------------------------------------------------------
 // route to get the call selected
 // ---------------------------------------------------------
@@ -127,49 +82,6 @@ router.post('', async function (req, res) {
 		});
 		return;
 	}
-
-	const operaAddress = global.operaAddress;
-	console.log(operaAddress);
-
-	if (operaAddress==='')
-	  {
-		alert("Not connected to MetaMask!");
-		return;
-	  }
-  
-	fetch('http://localhost:8080/contracts/MyContract.json', {
-		 method: 'GET',
-		 headers: {
-			 'Accept': 'application/json',
-		 },
-	 })
-		 .then(response => response.json())
-		 .then(response => {
-		   var bytecode = response.bytecode
-  
-		   let encodedArguments =web3.eth.abi.encodeParameter('string', 'default').substring(2);
-  
-		   ethereum.request({
-			 method: 'eth_sendTransaction', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
-			 params: [{
-			   from: operaAddress,
-			   data: bytecode+encodedArguments
-			 }]
-		   }).then((transactionHash)=>{
-			 console.log(transactionHash)
-			 web3.eth.getTransactionReceipt(transactionHash).then((receipt) => {
-			   if (receipt && receipt.contractAddress) {
-				 contractAddress = receipt.contractAddress;
-				 console.log("!!",contractAddress);
-			   }
-			 });
-  
-		   }).catch((error)=>{
-			 console.log(error)
-		   })
-		 })
-
-
 
 	const newCall = await Call.create({
 		name: req.body.name,

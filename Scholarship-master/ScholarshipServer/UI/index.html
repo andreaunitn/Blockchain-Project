@@ -22,22 +22,22 @@
           <br>
             <button id="deploy" onclick="deployContract()">Deploy Contract</button>
             <br>
-              <button id="getValue" onclick="getValueFromSmartConctract()">get</button>
-              <button id="setValue" onclick="setValueOfSmartConctract()">increment</button>
+              <button id="getValue" onclick="getBudgetFromSmartConctract()">get</button>
+              <button id="setValue" onclick="incrementBudgetOfSmartConctract()">increment</button>
         </div>
       </div>
       <hr>
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
-          <label>Nome</label><input id="name" type="text"><br>
-          <label>Cognome</label><input id="surname" type="text"><br>
-          <label>TaxCode</label><input id="taxcode" type="text"><br>
+          <label>Nome</label> <p id="name">Placeholder</p>
+          <label>Cognome </label> <p id="surname">Placeholder</p>
+          <label>TaxCode</label> <p id="taxcode">Placeholder</p>
           <label>ISEE</label><input id="isee" type="text"><br>
           <label>Anno</label><input id="year" type="text"><br>
           <label>Crediti</label><input id="crediti" type="text"><br>
           <label>address</label><input id="address" type="text"><br>
           <br>
           <button id="getStudents" onclick="getStudentFromSmartConctract(document.getElementById('address').value)">Get Students</button>
-          <button id="addStudent" onclick="addStudentToSmartContract(document.getElementById('name').value, document.getElementById('surname').value, document.getElementById('taxcode').value, document.getElementById('isee').value, document.getElementById('crediti').value, document.getElementById('year').value, document.getElementById('address').value)">Add Student</button>
+          <button id="addStudent" onclick="addStudentToSmartContract(document.getElementById('isee').value, document.getElementById('crediti').value, document.getElementById('year').value, document.getElementById('address').value)">Add Student</button>
           <button id="Rank" onclick="rankStudents()" style="background-color:red; color:yellow">Rank</button>
         </div>
     </div>
