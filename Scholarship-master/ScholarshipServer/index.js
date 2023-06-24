@@ -1,7 +1,8 @@
 const app = require('./app/app.js');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
-const Web3 = require('web3');
+
+
 
 /**
  * https://devcenter.heroku.com/articles/preparing-a-codebase-for-heroku-deployment#4-listen-on-the-correct-port

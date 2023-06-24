@@ -8,7 +8,7 @@ const { Web3 } = require('web3');
 var provider = new Provider({privateKeys: ["0x9187b08e9587d673244bf9bf0ca92cd1e1e98d2ba6718e3b5af188a52e0e49eb"], providerOrUrl: 'http://127.0.0.1:7545'});
 const web3 = new Web3(provider);
 const fs = require("fs");
-
+const path = require('path');
 
 // ---------------------------------------------------------
 // route to get all the calls
@@ -92,7 +92,7 @@ router.post('', async function (req, res) {
 		return;
 	}
 	
-	file = fs.readFileSync("/home/nicola/Scrivania/Blockchain-Project/Scholarship-master/ScholarshipServer/build/contracts/MyContract.json");
+	file = fs.readFileSync(path.resolve(__dirname, "../../../build/contracts/MyContract.json"));
 	var output = JSON.parse(file);
 
 	var contractABI = output.abi;
@@ -101,44 +101,41 @@ router.post('', async function (req, res) {
 	contract = new web3.eth.Contract(contractABI);
 	let newContract;
 	web3.eth.getAccounts().then((accounts) => {
-		console.log(accounts)
+		//console.log(accounts)
 		mainAccount = accounts[0];
-		console.log(mainAccount);
+		//console.log(mainAccount);
 		contract
 			.deploy({data: bytecode, arguments: [25000, 256]})
 			.send({from: mainAccount})
 			.on("receipt", (receipt) => {
 				console.log("Contract address: ", receipt.contractAddress);
 				newContract = new web3.eth.Contract(contractABI, receipt.contractAddress);
+				let contractsList = global.contracts;
+				if(contractsList == undefined){
+					contractsList = [];
+				}
+				contractsList.push({name: req.body.name, contractAddress: receipt.contractAddress});
+				global.contracts = contractsList;
+				for(let i = 0; i < global.contracts.length; i++){
+					console.log(global.contracts[i])
+				}
 			})
 			.then((initialContract) => {
-				console.log("FUNZIONE");
-				newContract.methods.getValue().call().then(response => console.log(Number(response)));
-				newContract.methods.incrementValue().send({from: mainAccount}).then(response => {					
+				////////////////////////////////////////////////////////
+				// EXAMPLE OF INTERACTION WITH THE SMART CONTRACT //////
+				///////////////////////////////////////////////////////
+				/*
+				newContract.methods.getBudget().call().then(response => console.log(Number(response)));
+				newContract.methods.incrementBudget().send({from: mainAccount}).then(response => {					
 					console.log("Increase");
-					newContract.methods.getValue().call().then(response => console.log(Number(response)));
+					newContract.methods.getBudget().call().then(response => console.log(Number(response)));
 				}
 				);
+				*/
 			})
 	})
-	/*
-	web3.eth.getAccounts().then((accounts) => {
-		console.log(accounts)
-		mainAccount = accounts[0];
-		console.log(mainAccount);
-		contract.methods.getValue();
-		contract
-			.deploy({data: bytecode})
-			.send({from: mainAccount})
-			.on("receipt", (receipt) => {
-				console.log("Contract address: ", receipt.contractAddress);
-			})
-			.then((initialContract) => {
 
-			})
-	})*/
-
-		 /**
+		 
 	const newCall = await Call.create({
 		name: req.body.name,
 		description: req.body.description,
@@ -148,7 +145,7 @@ router.post('', async function (req, res) {
 		averageRating: req.body.averageRating,
 		birthYear: req.body.birthYear,
 		endDate: req.body.endDate
-	});*/
+	});
 
 	res.status(200).json({
 		success: true,
