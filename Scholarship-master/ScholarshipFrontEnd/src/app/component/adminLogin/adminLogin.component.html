@@ -3,12 +3,16 @@
       <form class="example-list">
         <h1 style="text-align: center;">Login form</h1><br>
         <h3 style="text-align: center"><b style="color: red">{{errorMessage}}</b></h3>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label> Username: </mat-label>
+          <textarea matInput type="password" id="username" #username placeholder="Username" required></textarea>
+        </mat-form-field><br><br>
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Password: </mat-label>
             <textarea matInput type="password" id="psw" #psw placeholder="Password" required></textarea>
           </mat-form-field><br>
         <span style="padding-left: 45%"></span>
-        <button mat-raised-button color="primary" (click)="connectToMetamask(psw.value, $event)">Login</button>
+        <button mat-raised-button color="primary" (click)="login(username.value, psw.value, $event)">Login</button>
       </form><br>
     </div>
   </div>

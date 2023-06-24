@@ -24,46 +24,24 @@ export class AdminLoginComponent implements OnInit{
   
   }
 
-  async connectToMetamask(psw: string, event:any){
-    //this.session.removeItem("admin");
+  async login(username: string, psw: string, event: any){
     event.preventDefault();
-    
-    let ethereum = (window as any).ethereum;
-    if(typeof ethereum !== 'undefined'){
-      console.log("MetaMask is installed");
-    }
-    let address = "";
-    if(ethereum){
-      try{
-        ethereum.request({ method: 'eth_requestAccounts' }).then((addressMetamask: any) => {
-          address = addressMetamask[0];
-          console.log("Account connected: ", address);
-          this.login(address, psw);
-        });
-      } catch(error){
-        console.error("User denied account access");
-      }
-    } 
-  }
-
-  async login(address: string, psw: string){
     this.session.removeItem("fiscalCode");
     this.errorMessage = "";
 
-    if(address != ""){
-      if(psw == undefined || psw == ""){
+    
+      if(username == undefined || username == "" || psw == undefined || psw == ""){
         this.errorMessage = "Parameter not defined";
         return false;
       }
   
       const body = {
-        "address": address,
+        "username": username,
         "psw": psw
       };
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
       await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/user/loginAdmin', body, {headers: headers}).pipe(map(data => {
           this.session.setItem("admin", data.admin);
-          this.session.setItem("address", data.address);
           this.router.navigateByUrl("/");
       }),catchError(error => {
         if(error.error.message == undefined){
@@ -74,9 +52,7 @@ export class AdminLoginComponent implements OnInit{
         return of([]);
       })));
       return true;
-    } else {
-      return false;
-    }
   }
+  
 }
 

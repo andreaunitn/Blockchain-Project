@@ -3,7 +3,6 @@ import {catchError, lastValueFrom, map, of} from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
 
-
 @Component({
   selector: 'app-callAdmin',
   templateUrl: `./callAdmin.component.html`,
@@ -45,6 +44,7 @@ export class CallAdminComponent implements OnInit{
       "birthYear": birthYear,
       "endDate": new Date(endDate)
     };
+    
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/call', body, {headers: headers}).pipe(map(data => {
         this.router.navigateByUrl("/");
@@ -56,6 +56,7 @@ export class CallAdminComponent implements OnInit{
       }
       return of([]);
     })));
+
     return true;
   }
 

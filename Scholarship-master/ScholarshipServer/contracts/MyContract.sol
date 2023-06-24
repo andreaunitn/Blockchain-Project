@@ -20,18 +20,18 @@ contract MyContract {
     address[] public keys;
 
     string public myVariable;
-    uint256 public val = 0;
+    uint256 public val = 10;
 
-    constructor(string memory initialValue) {
-        myVariable = initialValue;
+    constructor(uint256 _isee, uint256 budget) {
+        ISEE_LIMIT = budget;
     }
 
     function getValue() public view returns (uint256) {
-        return val;
+        return ISEE_LIMIT;
     }
 
     function incrementValue() public {
-        val++;
+        ISEE_LIMIT++;
     }
 
     function getKeys() public view returns (address[] memory) {

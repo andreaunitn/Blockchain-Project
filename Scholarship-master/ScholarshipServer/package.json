@@ -14,14 +14,17 @@
     ]
   },
   "dependencies": {
+    "@truffle/hdwallet-provider": "^2.1.12",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "fs": "^0.0.1-security",
     "jest": "^28.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.2",
+    "node-fetch": "^2.6.11",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "supertest": "^6.2.3",

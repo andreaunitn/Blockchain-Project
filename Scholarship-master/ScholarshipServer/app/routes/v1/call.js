@@ -2,7 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Call = require('../../models/call');
 const verifyToken = require('../../middleware/auth');
-const web3 = new Web3('http://127.0.0.1:7545')
+const fetch = require('node-fetch')
+const Provider = require('@truffle/hdwallet-provider');
+const { Web3 } = require('web3');
+var provider = new Provider({privateKeys: ["0x9187b08e9587d673244bf9bf0ca92cd1e1e98d2ba6718e3b5af188a52e0e49eb"], providerOrUrl: 'http://127.0.0.1:7545'});
+const web3 = new Web3(provider);
+const fs = require("fs");
+
 
 // ---------------------------------------------------------
 // route to get all the calls
@@ -58,50 +64,6 @@ router.get('', async function (req, res) {
 	});
 });
 
-async function deployContract() {
-
-	const operaAddress = global.operaAddress;
-	console.log(operaAddress);
-
-	if (operaAddress==='')
-	  {
-		alert("Not connected to MetaMask!");
-		return;
-	  }
-  
-	fetch('http://localhost:8080/contracts/MyContract.json', {
-		 method: 'GET',
-		 headers: {
-			 'Accept': 'application/json',
-		 },
-	 })
-		 .then(response => response.json())
-		 .then(response => {
-		   var bytecode = response.bytecode
-  
-		   let encodedArguments =web3.eth.abi.encodeParameter('string', 'default').substring(2);
-  
-		   ethereum.request({
-			 method: 'eth_sendTransaction', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
-			 params: [{
-			   from: operaAddress,
-			   data: bytecode+encodedArguments
-			 }]
-		   }).then((transactionHash)=>{
-			 console.log(transactionHash)
-			 web3.eth.getTransactionReceipt(transactionHash).then((receipt) => {
-			   if (receipt && receipt.contractAddress) {
-				 contractAddress = receipt.contractAddress;
-				 console.log("!!",contractAddress);
-			   }
-			 });
-  
-		   }).catch((error)=>{
-			 console.log(error)
-		   })
-		 })
-  }
-
 // ---------------------------------------------------------
 // route to get the call selected
 // ---------------------------------------------------------
@@ -127,50 +89,54 @@ router.post('', async function (req, res) {
 		});
 		return;
 	}
+	
+	file = fs.readFileSync("/home/nicola/Scrivania/Blockchain-Project/Scholarship-master/ScholarshipServer/build/contracts/MyContract.json");
+	var output = JSON.parse(file);
 
-	const operaAddress = global.operaAddress;
-	console.log(operaAddress);
+	var contractABI = output.abi;
+	var bytecode = output.bytecode;
 
-	if (operaAddress==='')
-	  {
-		alert("Not connected to MetaMask!");
-		return;
-	  }
-  
-	fetch('http://localhost:8080/contracts/MyContract.json', {
-		 method: 'GET',
-		 headers: {
-			 'Accept': 'application/json',
-		 },
-	 })
-		 .then(response => response.json())
-		 .then(response => {
-		   var bytecode = response.bytecode
-  
-		   let encodedArguments =web3.eth.abi.encodeParameter('string', 'default').substring(2);
-  
-		   ethereum.request({
-			 method: 'eth_sendTransaction', //eth_call tx per cui non serve pagare e vedi i dati //eth_sendtx modifica lo stato della bc
-			 params: [{
-			   from: operaAddress,
-			   data: bytecode+encodedArguments
-			 }]
-		   }).then((transactionHash)=>{
-			 console.log(transactionHash)
-			 web3.eth.getTransactionReceipt(transactionHash).then((receipt) => {
-			   if (receipt && receipt.contractAddress) {
-				 contractAddress = receipt.contractAddress;
-				 console.log("!!",contractAddress);
-			   }
-			 });
-  
-		   }).catch((error)=>{
-			 console.log(error)
-		   })
-		 })
+	contract = new web3.eth.Contract(contractABI);
+	let newContract;
+	web3.eth.getAccounts().then((accounts) => {
+		console.log(accounts)
+		mainAccount = accounts[0];
+		console.log(mainAccount);
+		contract
+			.deploy({data: bytecode, arguments: [25000, 256]})
+			.send({from: mainAccount})
+			.on("receipt", (receipt) => {
+				console.log("Contract address: ", receipt.contractAddress);
+				newContract = new web3.eth.Contract(contractABI, receipt.contractAddress);
+			})
+			.then((initialContract) => {
+				console.log("FUNZIONE");
+				newContract.methods.getValue().call().then(response => console.log(Number(response)));
+				newContract.methods.incrementValue().send({from: mainAccount}).then(response => {					
+					console.log("Increase");
+					newContract.methods.getValue().call().then(response => console.log(Number(response)));
+				}
+				);
+			})
+	})
+	/*
+	web3.eth.getAccounts().then((accounts) => {
+		console.log(accounts)
+		mainAccount = accounts[0];
+		console.log(mainAccount);
+		contract.methods.getValue();
+		contract
+			.deploy({data: bytecode})
+			.send({from: mainAccount})
+			.on("receipt", (receipt) => {
+				console.log("Contract address: ", receipt.contractAddress);
+			})
+			.then((initialContract) => {
 
+			})
+	})*/
 
-
+		 /**
 	const newCall = await Call.create({
 		name: req.body.name,
 		description: req.body.description,
@@ -180,12 +146,12 @@ router.post('', async function (req, res) {
 		averageRating: req.body.averageRating,
 		birthYear: req.body.birthYear,
 		endDate: req.body.endDate
-	});
+	});*/
 
 	res.status(200).json({
 		success: true,
 		message: "Created correctly",
-		self: "/api/v1/calls/" + newCall.name
+		//self: "/api/v1/calls/" + newCall.name
 	});
 });
 
