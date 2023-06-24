@@ -19,7 +19,7 @@ router.get('/all', async function (req, res) {
 	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
-	// find the call information 
+	// find the call information
 	let calls = await Call.find({});
 	res.status(200).json(calls.map(call => {
 		return {
@@ -49,7 +49,7 @@ router.get('', async function (req, res) {
 		return;
 	}
 
-	// find the call information 
+	// find the call information
 	let call = await Call.findOne({"name": req.query.name});
 	res.status(200).json({
 		name: call.name,
@@ -64,6 +64,8 @@ router.get('', async function (req, res) {
 	});
 });
 
+
+
 // ---------------------------------------------------------
 // route to get the call selected
 // ---------------------------------------------------------
@@ -73,13 +75,13 @@ router.post('', async function (req, res) {
 	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
-	if (!req.body.name || req.body.name == "" || !req.body.description || req.body.description == "" 
+	if (!req.body.name || req.body.name == "" || !req.body.description || req.body.description == ""
 		|| !req.body.residenceRegion || req.body.residenceRegion == "") {
 		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters.' });
 		return;
 	}
 
-	// find the call information 
+	// find the call information
 	let call = await Call.findOne({"name": req.body.name});
 
 	if(call != null){

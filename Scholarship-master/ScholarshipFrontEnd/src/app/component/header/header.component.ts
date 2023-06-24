@@ -31,7 +31,6 @@ export class HeaderComponent {
 
   async connectToMetamask(){
     this.session.removeItem("admin");
-    /*
     let ethereum = (window as any).ethereum;
     if(typeof ethereum !== 'undefined'){
       console.log("MetaMask is installed");
@@ -47,8 +46,8 @@ export class HeaderComponent {
       } catch(error){
         console.error("User denied account access");
       }
-    }  */
-    this.login("0x152483");  
+    }
+    this.login("0x152483");
   }
 
   async login(address: string){

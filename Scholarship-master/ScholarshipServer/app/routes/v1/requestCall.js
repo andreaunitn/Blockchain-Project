@@ -7,6 +7,11 @@ const RequestCall = require('../../models/requestCall');
 const verifyToken = require('../../middleware/auth');
 const requestPromise = require('request-promise');
 
+// const cors = require('cors');
+// router.use(cors({
+//     origin: '*'
+// }));
+
 
 // ---------------------------------------------------------
 // route to get request call of a user
@@ -51,6 +56,7 @@ router.post('', async function (req, res) {
 
 	// find the user information 
 	let request = await RequestCall.findOne({"address": req.body.address, "name": req.body.name});
+	console.log(request)
 	if (request != null || request.result == true) {
 		res.status(409).json({
 			success: false,
