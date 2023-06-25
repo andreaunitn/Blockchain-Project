@@ -1,21 +1,18 @@
 const app = require('./app/app.js');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv').config({path: __dirname + "/.env"});
 
 
 
 /**
  * https://devcenter.heroku.com/articles/preparing-a-codebase-for-heroku-deployment#4-listen-on-the-correct-port
  */
-
 const port = process.env.PORT || 8080;
-
-DB_URL="mongodb+srv://user:user@blockchaindb.8mkz91z.mongodb.net/OperaDB?retryWrites=true&w=majority"
 /**
  * Configure mongoose
  */
 // mongoose.Promise = global.Promise;
-app.locals.db = mongoose.connect(DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+app.locals.db = mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
 .then ( async () => {
 
     console.log("Connected to Database");

@@ -23,13 +23,12 @@ export class CallAdminComponent implements OnInit{
   
   }
 
-  async add(name:String, description: string, ISEE: number, residenceRegion: string, credits:number, averageRating: number, birthYear: string, endDate: Date, event:any){
+  async add(name:String, description: string, ISEE: number, budget: number, credits:number, averageRating: number, endDate: Date, event:any){
     event.preventDefault();
     this.errorMessage = "";
     
     if(name == undefined || name == "" || description == undefined || description == "" || ISEE == undefined
-        || residenceRegion == undefined || residenceRegion == "" || credits == undefined
-        || averageRating == undefined || birthYear == undefined || endDate == undefined){
+        || budget == undefined || credits == undefined || averageRating == undefined || endDate == undefined){
       this.errorMessage = "Parameter not defined";
       return false;
     }
@@ -38,10 +37,9 @@ export class CallAdminComponent implements OnInit{
       "name": name,
       "description": description,
       "ISEE": ISEE,
-      "residenceRegion": residenceRegion,
+      "budget": budget,
       "credits": credits,
       "averageRating": averageRating,
-      "birthYear": birthYear,
       "endDate": new Date(endDate)
     };
     

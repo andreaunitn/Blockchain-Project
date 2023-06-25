@@ -9,6 +9,7 @@ const perSchema = mongoose.Schema({
     surname: String,
     birthYear: Number,
 	residenceRegion: String,
+    status: String,
 })
 
 module.exports = perDb.model('personal', perSchema)

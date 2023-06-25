@@ -30,10 +30,10 @@ export class HomeComponent implements OnInit{
     await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/call/all`, {headers: headers}).pipe(map(data => {
         let i;
         this.calls = new Array(data.length);
-        console.log(data);
+        //console.log(data);
         if (data.length > 0) {
           for (i = 0; i < data.length; i++) {
-            this.calls[i] = new Call(data[i].name, data[i].description, data[i].ISEE, data[i].residenceRegion, data[i].credits, data[i].averageRating, data[i].birthYear, data[i].endDate);
+            this.calls[i] = new Call(data[i].name, data[i].description, data[i].ISEE, data[i].budget, data[i].credits, data[i].averageRating, data[i].endDate);
           }
         }
     }), catchError(error => {
@@ -81,6 +81,24 @@ export class HomeComponent implements OnInit{
       })));
   }
 
+  async computeRanking(){
+    let callName = this.callSelected?.name;
+
+    const body = {
+      "name": callName
+    };
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/call/computeRanking', body, {headers: headers}).pipe(map(data => {
+      console.log(data);
+    }),catchError(error => {
+      let errore = error.error.message;
+      if(errore == undefined){
+        errore = "Server error";
+      }
+      return of([]);
+    })));
+}
+
   callDetail(event: any) {
     // @ts-ignore
     document.getElementById("callInfoModule").style.display = 'block';
@@ -97,7 +115,7 @@ export class HomeComponent implements OnInit{
       // @ts-ignore
       callInfo = "<b>Call:</b> " + this.callSelected.name + "<br><b>Description:</b> " + this.callSelected.description + "<br>";
       // @ts-ignore
-      callInfo += "<br><br><h2>Requirements</h2><b>ISEE:</b> " + this.callSelected.ISEE + "<br><b>Region of residence:</b> " + this.callSelected.residenceRegion + "<br><b>Credits:</b> " + this.callSelected.credits + "<br><b>Average rating:</b> " + this.callSelected.averageRating + "<br><b>BirthYear:</b> " + this.callSelected.birthYear;
+      callInfo += "<br><br><h2>Requirements</h2><b>ISEE:</b> " + this.callSelected.ISEE + "<br><b>Budget:</b> " + this.callSelected.budget + "<br><b>Credits:</b> " + this.callSelected.credits + "<br><b>Average rating:</b> " + this.callSelected.averageRating + "<br>";
       
       // @ts-ignore
       let eD = new Date(this.callSelected?.endDate);

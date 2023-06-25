@@ -7,6 +7,7 @@ const uniSchema = mongoose.Schema({
     fiscalCode: String,
     credits: Number,
 	averageRating: Number,
+    uniYear: Number,
 	offCourse: Boolean 
 })
 

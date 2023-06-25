@@ -6,11 +6,13 @@ const router = express.Router();
 const RequestCall = require('../../models/requestCall');
 const verifyToken = require('../../middleware/auth');
 const requestPromise = require('request-promise');
-
-// const cors = require('cors');
-// router.use(cors({
-//     origin: '*'
-// }));
+const dotenv = require('dotenv').config({path: __dirname + "/.env"}); //FIX
+const Provider = require('@truffle/hdwallet-provider');
+const { Web3 } = require('web3');
+var provider = new Provider({privateKeys: ["0x9187b08e9587d673244bf9bf0ca92cd1e1e98d2ba6718e3b5af188a52e0e49eb"], providerOrUrl: 'http://127.0.0.1:7545'});
+const web3 = new Web3(provider);
+const fs = require("fs");
+const path = require('path');
 
 
 // ---------------------------------------------------------
@@ -56,8 +58,7 @@ router.post('', async function (req, res) {
 
 	// find the user information 
 	let request = await RequestCall.findOne({"address": req.body.address, "name": req.body.name});
-	console.log(request)
-	if (request != null || request.result == true) {
+	if (request != null && request.result == true) {
 		res.status(409).json({
 			success: false,
 			message: 'Request already done'
@@ -74,7 +75,7 @@ router.post('', async function (req, res) {
 
   let requestResult = true;
 
-  if(user.ISEE > call.ISEE || user.averageRating < call.averageRating || user.credits < call.credits || user.birthYear < call.birthYear){
+  if(user.ISEE > call.ISEE || user.averageRating < call.averageRating || user.credits < call.credits){
     requestResult = false;
   }
 
@@ -91,16 +92,46 @@ router.post('', async function (req, res) {
     result: requestResult,
     dateTime: dateTime,
     message: message
-  });      
+  });    
+  
+  file = fs.readFileSync(path.resolve(__dirname, "../../../build/contracts/MyContract.json"));
+  var output = JSON.parse(file);
 
-	res.status(200).json({
-    name: newRequest.name, 
-    address: newRequest.address, 
-    result: newRequest.requestResult,
-    dateTime: newRequest.dateTime,
-    message: newRequest.message,
-		self: "/api/v1/requestCall"
-	});
+  var contractABI = output.abi; 
+  
+  var statusIndex = 0;
+  if(user.status == "PENDOLARE"){
+	statusIndex = 1;
+  } else if(user.status == "FUORI_SEDE"){
+	statusIndex = 2;
+  }
+  
+  let operaAccount = "";
+  web3.eth.getAccounts().then((accounts) => {
+	  operaAccount = accounts[0];
+  	  let contract = new web3.eth.Contract(contractABI, call.contractAddress);
+	  contract.methods.addStudent(user.ISEE, user.credits, user.uniYear, req.body.address, statusIndex).send({from:operaAccount}).then(response => {
+			
+			contract.methods.getStudent(req.body.address).call().then(res => {
+				const student = {
+					isee: Number(res.isee),
+					crediti: Number(res.credits),
+					year: Number(res.year),
+					score: Number(res.score)
+				};
+				console.log(student);
+
+				res.status(200).json({
+					name: newRequest.name, 
+					address: newRequest.address, 
+					result: newRequest.requestResult,
+					dateTime: newRequest.dateTime,
+					message: newRequest.message,
+					self: "/api/v1/requestCall"
+				});
+			})
+	  })
+  })
 });
 
 module.exports = router;

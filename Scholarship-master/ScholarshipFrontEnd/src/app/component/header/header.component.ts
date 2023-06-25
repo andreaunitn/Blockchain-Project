@@ -47,7 +47,6 @@ export class HeaderComponent {
         console.error("User denied account access");
       }
     }
-    this.login("0x152483");
   }
 
   async login(address: string){

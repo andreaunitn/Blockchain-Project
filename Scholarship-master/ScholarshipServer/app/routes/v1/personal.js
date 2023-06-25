@@ -33,6 +33,7 @@ router.get('', async function (req, res) {
 		surname: personal.surname,
 		birthYear: personal.birthYear,
 		residenceRegion: personal.residenceRegion,
+		status: personal.status,
 		self: "/api/v1/personal/" + personal.fiscalCode
 	});
 });

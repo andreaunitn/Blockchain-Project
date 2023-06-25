@@ -42,12 +42,12 @@ router.get('/getAllInfo', async function (req, res) {
 		fiscalCode: user.fiscalCode,
 		name: personalInfo.name,
 		surname: personalInfo.surname,
-		birthYear: personalInfo.birthYear,
-		residenceRegion: personalInfo.residenceRegion,
+		status: personalInfo.status,
 		ISEE: ecoInfo.ISEE,
 		fiscalCode: uniInfo.fiscalCode,
 		averageRating: uniInfo.averageRating,
 		credits: uniInfo.credits,
+		uniYear: uniInfo.uniYear,
 		offCourse: uniInfo.offCourse
 	}
 

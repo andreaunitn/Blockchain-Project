@@ -26,6 +26,8 @@ contract MyContract {
     uint256[] public CREDITS_PER_YEAR = [0, 45, 85]; //required credits for each year of the bachelor to be eligible
     uint256[] public FUNDS = [1300, 1800, 3079]; //minimum scholarsip value for each student status (max is double)
     uint256 public BUDGET; //entire budget for the scholarships
+    string public NAME; //name of scholarship
+    string public DATE; //end date to appply for the scholarship
     
     mapping(address => Student) public mappingStudents; //contains the association address->student
 
@@ -34,9 +36,11 @@ contract MyContract {
 
     /////////////////////////////////////////////////////////////////////
 
-    constructor(uint256 budget, uint256 isee_limit) {
+    constructor(uint256 budget, uint256 isee_limit, string memory name, string memory date) {
         ISEE_LIMIT = isee_limit;
         BUDGET = budget;
+        NAME = name;
+        DATE = date;
     }
 
     function getBudget() public view returns (uint256) {
@@ -56,6 +60,17 @@ contract MyContract {
 
     function getStudent(address key) public view returns (Student memory) {
         return mappingStudents[key];
+    }
+
+    function getStudents() public returns (Student[] memory){
+        uint len = rankedKeys.length;
+        Student[] memory studentArray = new Student[](len);
+        
+        for (uint i = 0; i < len; i++) {
+            studentArray[i] = mappingStudents[rankedKeys[i]];
+        }
+
+        return studentArray;
     }
 
     function addStudent(uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status) public {

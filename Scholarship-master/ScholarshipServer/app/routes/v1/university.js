@@ -31,6 +31,7 @@ router.get('', async function (req, res) {
 		fiscalCode: uni.fiscalCode,
 		averageRating: uni.averageRating,
 		credits: uni.credits,
+		uniYear: uni.uniYear,
 		offCourse: uni.offCourse,
 		self: "/api/v1/university/" + uni.fiscalCode
 	});
