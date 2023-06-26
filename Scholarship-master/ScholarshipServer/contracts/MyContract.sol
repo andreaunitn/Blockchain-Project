@@ -9,7 +9,7 @@ contract MyContract {
     // STRUCTS AND GLOBAL VARIABLES
 
     struct Student {
-        uint256 isee; // [0, 1000000]
+        uint256 isee; // [1, 1000000]
         uint256 credits; // [0, 1000]
         uint256 year; //year you are asking for the scholarship [1, 3]
         uint256 score; //computed for ranking
@@ -85,8 +85,11 @@ contract MyContract {
         if(newStudent.eligible)
             newStudent.score = computeScore(newStudent);
 
+        if(mappingStudents[key].isee == 0) //check if students is already inserted by looking at isee value
+            keys.push(key);
+
         mappingStudents[key] = newStudent;
-        keys.push(key);
+        
     }
 
     function getStudentCount() public view returns (uint256) {
@@ -103,21 +106,28 @@ contract MyContract {
         address[] memory sortedArray = keys;
         uint len = sortedArray.length;
 
-        // Order students' addresses by looking at their score
-        for (uint i = 0; i < len - 1; i++) {
-            for (uint j = i + 1; j < len; j++) {
-                if (mappingStudents[sortedArray[i]].score < mappingStudents[sortedArray[j]].score) {
-                    // Swap elements
-                    address temp = sortedArray[i];
-                    sortedArray[i] = sortedArray[j];
-                    sortedArray[j] = temp;
+        if(len == 1) {
+            rankedKeys.push(sortedArray[0]);
+        }
+        else 
+        {
+            // Order students' addresses by looking at their score
+            for (uint i = 0; i < len - 1; i++) {
+                for (uint j = i + 1; j < len; j++) {
+                    if (mappingStudents[sortedArray[i]].score < mappingStudents[sortedArray[j]].score) {
+                        // Swap elements
+                        address temp = sortedArray[i];
+                        sortedArray[i] = sortedArray[j];
+                        sortedArray[j] = temp;
+                    }
                 }
             }
-        }
 
-        for (uint i = 0; i < len; i++) {
-            rankedKeys.push(sortedArray[i]);
-        }       
+            for (uint i = 0; i < len; i++) {
+                rankedKeys.push(sortedArray[i]);
+            }   
+        }
+            
     }
 
     //Uses the student's ranking to assign funds to each student until funds are depleted

@@ -98,12 +98,27 @@ router.get('/ranking', async function (req, res) {
 		operaAccount = accounts[0];
 		let contract = new web3.eth.Contract(contractABI, call.contractAddress);
 
-		contract.methods.getKeys().call().then(result => {
-			console.log(result);
-			contract.methods.getRankedKeys().call().then(result => {
-				console.log(result);
-				contract.methods.getStudents().call().then(result => {
-					console.log(result);
+		contract.methods.getKeys().call({from: operaAccount}).then(result => {
+
+			console.log("KEYS: " + result);
+			// res = web3.eth.abi.decodeParameter('address[]', result);
+			// console.log(res)
+			// console.log(res.length)
+
+			contract.methods.getRankedKeys().call({from: operaAccount}).then(result => {
+
+				console.log("RANKEDKEYS: " + result);
+				// res = web3.eth.abi.decodeParameter('address[]', result);
+				// console.log(res)
+				// console.log(res.length)
+
+				
+				contract.methods.getStudents().call({from: operaAccount}).then(result => {
+
+					console.log("STUDENTS: " + result);
+					// res = web3.eth.abi.decodeParameter('address[]', result);
+					// console.log(res)
+					// console.log(res.length)
 					
 					res.status(200).json({
 						message: "Completed"
@@ -233,9 +248,10 @@ router.post('/computeRanking', async function (req, res) {
 		operaAccount = accounts[0];
 		let contract = new web3.eth.Contract(contractABI, call.contractAddress);
 		contract.methods.rankStudents().send({from: operaAccount}).then(response => {
-				//console.log(response);
+				console.log("Ranking completed");
+				console.log(response);
 				contract.methods.assignFunding().send({from: operaAccount}).then(response => {
-					console.log("Ranking completed");
+					console.log("Funding assignment completed");
 					res.status(200).json({
 						message: "Completed"
 					});
