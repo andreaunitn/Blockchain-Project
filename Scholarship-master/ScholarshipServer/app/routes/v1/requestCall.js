@@ -6,10 +6,10 @@ const router = express.Router();
 const RequestCall = require('../../models/requestCall');
 const verifyToken = require('../../middleware/auth');
 const requestPromise = require('request-promise');
-const dotenv = require('dotenv').config({path: __dirname + "/.env"}); //FIX
+const dotenv = require('dotenv').config({path: __dirname + "/../../../.env"});
 const Provider = require('@truffle/hdwallet-provider');
 const { Web3 } = require('web3');
-var provider = new Provider({privateKeys: ["0x9187b08e9587d673244bf9bf0ca92cd1e1e98d2ba6718e3b5af188a52e0e49eb"], providerOrUrl: 'http://127.0.0.1:7545'});
+var provider = new Provider({privateKeys: [process.env.OPERA_PRIVATE_KEY], providerOrUrl: 'http://127.0.0.1:7545'});
 const web3 = new Web3(provider);
 const fs = require("fs");
 const path = require('path');
@@ -112,12 +112,12 @@ router.post('', async function (req, res) {
   	  let contract = new web3.eth.Contract(contractABI, call.contractAddress);
 	  contract.methods.addStudent(user.ISEE, user.credits, user.uniYear, req.body.address, statusIndex).send({from:operaAccount}).then(response => {
 			
-			contract.methods.getStudent(req.body.address).call().then(res => {
+			contract.methods.getStudent(req.body.address).call().then(response => {
 				const student = {
-					isee: Number(res.isee),
-					crediti: Number(res.credits),
-					year: Number(res.year),
-					score: Number(res.score)
+					isee: Number(response.isee),
+					crediti: Number(response.credits),
+					year: Number(response.year),
+					score: Number(response.score)
 				};
 				console.log(student);
 

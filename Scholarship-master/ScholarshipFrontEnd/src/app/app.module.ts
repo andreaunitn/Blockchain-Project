@@ -28,11 +28,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CallAdminComponent } from './component/callAdmin/callAdmin.component';
 import { AdminLoginComponent } from './component/adminLogin/adminLogin.component';
 import { RequestCallByUserComponent } from './component/requestCallByUser/requestCallByUser.component';
+import { RankingComponent } from './component/ranking/ranking.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent, HomeComponent, SignUpComponent, CallAdminComponent, AdminLoginComponent, RequestCallByUserComponent
+    HeaderComponent, HomeComponent, SignUpComponent, CallAdminComponent, AdminLoginComponent, RequestCallByUserComponent, RankingComponent
   ],
   imports: [
     BrowserModule,

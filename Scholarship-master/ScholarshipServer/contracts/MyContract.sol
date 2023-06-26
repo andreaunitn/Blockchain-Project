@@ -27,7 +27,7 @@ contract MyContract {
     uint256[] public FUNDS = [1300, 1800, 3079]; //minimum scholarsip value for each student status (max is double)
     uint256 public BUDGET; //entire budget for the scholarships
     string public NAME; //name of scholarship
-    string public DATE; //end date to appply for the scholarship
+    string public DATE; //end date to apply for the scholarship
     
     mapping(address => Student) public mappingStudents; //contains the association address->student
 
@@ -58,14 +58,18 @@ contract MyContract {
         return keys;
     }
 
+     function getRankedKeys() public view returns (address[] memory) {
+        return rankedKeys;
+    }
+
     function getStudent(address key) public view returns (Student memory) {
         return mappingStudents[key];
     }
 
-    function getStudents() public returns (Student[] memory){
+    function getStudents() public view returns (Student[] memory){
         uint len = rankedKeys.length;
         Student[] memory studentArray = new Student[](len);
-        
+
         for (uint i = 0; i < len; i++) {
             studentArray[i] = mappingStudents[rankedKeys[i]];
         }
@@ -95,8 +99,7 @@ contract MyContract {
         return student.isee;
     }
 
-    function rankStudents() public returns (address[] memory){
-
+    function rankStudents() public {
         address[] memory sortedArray = keys;
         uint len = sortedArray.length;
 
@@ -112,9 +115,9 @@ contract MyContract {
             }
         }
 
-        rankedKeys = sortedArray;
-
-        return sortedArray;
+        for (uint i = 0; i < len; i++) {
+            rankedKeys.push(sortedArray[i]);
+        }       
     }
 
     //Uses the student's ranking to assign funds to each student until funds are depleted

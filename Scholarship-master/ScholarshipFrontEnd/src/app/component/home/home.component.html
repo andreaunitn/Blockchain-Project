@@ -29,7 +29,7 @@
             <h2 style="color:red" *ngIf="verifyEndDate() == true && session.getItem('fiscalCode') == null && session.getItem('admin') == null">Login to apply</h2>
             <button *ngIf="session.getItem('admin') != null" (click)="computeRanking()"> Compute Ranking </button>
             <button *ngIf="verifyEndDate() == true && session.getItem('fiscalCode') != null" (click)="applyForCall()"> Apply </button>
-            <button *ngIf="verifyEndDate() == false"> View List </button>
+            <button *ngIf="verifyEndDate() == false || verifyEndDate() == true" (click)="viewRanking()"> View Ranking </button>
             <br>
         </div>
     </div>

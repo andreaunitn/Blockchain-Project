@@ -8,6 +8,7 @@ import { adminGuard } from "./guards/adminGuard.component";
 import { AdminLoginComponent } from "./component/adminLogin/adminLogin.component";
 import { RequestCallByUserComponent } from "./component/requestCallByUser/requestCallByUser.component";
 import { loggedGuard } from "./guards/loggedGuard.component";
+import { RankingComponent } from "./component/ranking/ranking.component";
 
 
 // @ts-ignore
@@ -17,6 +18,7 @@ export const appRoutes: Routes =  [
   { path: "requestCallByUser", component: RequestCallByUserComponent, canActivate: [loggedGuard]},
   { path: "callAdmin", component: CallAdminComponent, canActivate: [adminGuard]},
   { path: "adminLogin", component: AdminLoginComponent},
+  { path: "ranking", component: RankingComponent},
   { path: "", redirectTo: "home", pathMatch: "full" }
 ];
 

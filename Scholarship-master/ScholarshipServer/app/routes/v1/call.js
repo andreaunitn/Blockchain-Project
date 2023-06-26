@@ -4,9 +4,9 @@ const Call = require('../../models/call');
 const verifyToken = require('../../middleware/auth');
 const fetch = require('node-fetch')
 const Provider = require('@truffle/hdwallet-provider');
-const dotenv = require('dotenv').config({path: __dirname + "/../../.env"}); //FIX
+const dotenv = require('dotenv').config({path: __dirname + "/../../../.env"});
 const { Web3 } = require('web3');
-var provider = new Provider({privateKeys: ["0x9187b08e9587d673244bf9bf0ca92cd1e1e98d2ba6718e3b5af188a52e0e49eb"], providerOrUrl: 'http://127.0.0.1:7545'});
+var provider = new Provider({privateKeys: [process.env.OPERA_PRIVATE_KEY], providerOrUrl: 'http://127.0.0.1:7545'});
 const web3 = new Web3(provider);
 const fs = require("fs");
 const path = require('path');
@@ -65,10 +65,62 @@ router.get('', async function (req, res) {
 	});
 });
 
+// ---------------------------------------------------------
+// route to get the ranking
+// ---------------------------------------------------------
+router.get('/ranking', async function (req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+	res.setHeader('Access-Control-Allow-Credentials', true);
+	if (!req.query.name) {
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters.' });
+		return;
+	}
+	// find the call information
+	let call = await Call.findOne({"name": req.query.name});
+
+	if(call == null){
+		res.status(404).json({
+			success: false,
+			message: 'Call not found'
+		});
+		return;
+	}
+
+	file = fs.readFileSync(path.resolve(__dirname, "../../../build/contracts/MyContract.json"));
+	var output = JSON.parse(file);
+
+	var contractABI = output.abi;
+	
+	let operaAccount = "";
+	web3.eth.getAccounts().then(async (accounts) => {
+		operaAccount = accounts[0];
+		let contract = new web3.eth.Contract(contractABI, call.contractAddress);
+
+		contract.methods.getKeys().call().then(result => {
+			console.log(result);
+			contract.methods.getRankedKeys().call().then(result => {
+				console.log(result);
+				contract.methods.getStudents().call().then(result => {
+					console.log(result);
+					
+					res.status(200).json({
+						message: "Completed"
+					});
+				}).catch(err => console.log(err));
+			}).catch(err => console.log(err));
+		}).catch(err => console.log(err));
+
+
+	})
+	
+});
+
 
 
 // ---------------------------------------------------------
-// route to get the call selected
+// route to add a new call
 // ---------------------------------------------------------
 router.post('', async function (req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -104,7 +156,7 @@ router.post('', async function (req, res) {
 	web3.eth.getAccounts().then((accounts) => {
 		operaAccount = accounts[0];
 		contract
-			.deploy({data: bytecode, arguments: [25000, req.body.ISEE, req.body.name, (req.body.endDate).toString()]})
+			.deploy({data: bytecode, arguments: [req.body.budget, req.body.ISEE, req.body.name, (req.body.endDate).toString()]})
 			.send({from: operaAccount})
 			.on("receipt", async (receipt) => {
 				contractAddress = receipt.contractAddress;
@@ -180,21 +232,14 @@ router.post('/computeRanking', async function (req, res) {
 	web3.eth.getAccounts().then((accounts) => {
 		operaAccount = accounts[0];
 		let contract = new web3.eth.Contract(contractABI, call.contractAddress);
-		contract.methods.rankStudents().call().then(response => {
+		contract.methods.rankStudents().send({from: operaAccount}).then(response => {
 				//console.log(response);
 				contract.methods.assignFunding().send({from: operaAccount}).then(response => {
-					/*
-					contract.methods.getStudents().call().then(result => {
-						console.log(result);
-						
-						res.status(200).json({
-							message: "Completed"
-						});
-					}).catch(err => console.log(err));
-					*/
+					console.log("Ranking completed");
 					res.status(200).json({
 						message: "Completed"
 					});
+					
 				})
 		})
 	})

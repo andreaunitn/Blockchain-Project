@@ -42,6 +42,11 @@ export class HomeComponent implements OnInit{
   })));
   }
 
+  async viewRanking(){
+    // @ts-ignore
+    this.router.navigate(['/ranking'], {queryParams: {call: this.callSelected.name}})
+  }
+
   verifyEndDate(){
     if(this.callSelected != undefined && new Date(this.callSelected.endDate).getTime() > new Date().getTime()){
       return true;
