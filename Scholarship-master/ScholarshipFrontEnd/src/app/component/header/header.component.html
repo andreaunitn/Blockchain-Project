@@ -4,8 +4,8 @@
     <button *ngIf="session.getItem('address') != null" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/requestCallByUser"><h3>MY REQUESTS</h3></button>
     <button *ngIf="session.getItem('admin') != null" style="color:white; border: 0px; background-color:#3f51b5" routerLink="/callAdmin"><h3>ADD CALL</h3></button>
     <span class="fx-spacer"></span>
-    <a *ngIf="session.getItem('fiscalCode') == null; then notLoggedIn else loggedIn"> </a>
-    <a *ngIf="session.getItem('admin') == null; then adminNotLoggedIn else adminLoggedIn"> </a>
+    <div *ngIf="session.getItem('admin') == null"><a *ngIf="session.getItem('fiscalCode') == null; then notLoggedIn else loggedIn"> </a> </div>
+    <div *ngIf="session.getItem('fiscalCode') == null"><a *ngIf="session.getItem('admin') == null; then adminNotLoggedIn else adminLoggedIn"> </a> </div>
 </mat-toolbar>
   
   <ng-template #notLoggedIn>

@@ -98,36 +98,29 @@ router.get('/ranking', async function (req, res) {
 		operaAccount = accounts[0];
 		let contract = new web3.eth.Contract(contractABI, call.contractAddress);
 
-		contract.methods.getKeys().call({from: operaAccount}).then(result => {
+		contract.methods.getStudents().call({from: operaAccount}).then(result => {
 
-			console.log("KEYS: " + result);
-			// res = web3.eth.abi.decodeParameter('address[]', result);
-			// console.log(res)
-			// console.log(res.length)
-
-			contract.methods.getRankedKeys().call({from: operaAccount}).then(result => {
-
-				console.log("RANKEDKEYS: " + result);
-				// res = web3.eth.abi.decodeParameter('address[]', result);
-				// console.log(res)
-				// console.log(res.length)
-
-				
-				contract.methods.getStudents().call({from: operaAccount}).then(result => {
-
-					console.log("STUDENTS: " + result);
-					// res = web3.eth.abi.decodeParameter('address[]', result);
-					// console.log(res)
-					// console.log(res.length)
+			console.log("STUDENTS: ");
 					
-					res.status(200).json({
-						message: "Completed"
-					});
-				}).catch(err => console.log(err));
-			}).catch(err => console.log(err));
+			res.status(200).json(result.map(orderedCall => {
+				let status = "IN_SEDE";
+				if(Number(orderedCall._status) == 1){
+					status = "PENDOLARE";
+				} else if(Number(orderedCall._status) == 2){
+					status = "FUORI_SEDE";
+				}
+				return {
+					address: orderedCall.accountAddress,
+					ISEE: Number(orderedCall.isee),
+					credits: Number(orderedCall.credits),
+					year: Number(orderedCall.year),
+					score: Number(orderedCall.score),
+					funds: Number(orderedCall.funds),
+					status: status,
+					self: "/api/v1/calls/" + orderedCall.accountAddress
+				}
+			}));
 		}).catch(err => console.log(err));
-
-
 	})
 	
 });

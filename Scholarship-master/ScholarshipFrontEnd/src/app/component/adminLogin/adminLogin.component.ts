@@ -27,6 +27,7 @@ export class AdminLoginComponent implements OnInit{
   async login(username: string, psw: string, event: any){
     event.preventDefault();
     this.session.removeItem("fiscalCode");
+    this.session.removeItem("address");
     this.errorMessage = "";
 
     

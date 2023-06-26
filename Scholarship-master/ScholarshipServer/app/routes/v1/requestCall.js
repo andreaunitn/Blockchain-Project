@@ -58,7 +58,7 @@ router.post('', async function (req, res) {
 
 	// find the user information 
 	let request = await RequestCall.findOne({"address": req.body.address, "name": req.body.name});
-	if (request != null && request.result == true) {
+	if (request != null) {
 		res.status(409).json({
 			success: false,
 			message: 'Request already done'
@@ -105,11 +105,12 @@ router.post('', async function (req, res) {
   } else if(user.status == "FUORI_SEDE"){
 	statusIndex = 2;
   }
-  
+
   let operaAccount = "";
   web3.eth.getAccounts().then((accounts) => {
 	  operaAccount = accounts[0];
   	  let contract = new web3.eth.Contract(contractABI, call.contractAddress);
+	  console.log(user);
 	  contract.methods.addStudent(user.ISEE, user.credits, user.uniYear, req.body.address, statusIndex).send({from:operaAccount}).then(response => {
 			
 			contract.methods.getStudent(req.body.address).call().then(response => {
@@ -130,7 +131,7 @@ router.post('', async function (req, res) {
 					self: "/api/v1/requestCall"
 				});
 			})
-	  })
+	  }).catch(err => console.log(err));
   })
 });
 

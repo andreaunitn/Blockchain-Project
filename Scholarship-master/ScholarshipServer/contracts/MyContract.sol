@@ -9,6 +9,7 @@ contract MyContract {
     // STRUCTS AND GLOBAL VARIABLES
 
     struct Student {
+        address accountAddress; //address of the account of the student
         uint256 isee; // [1, 1000000]
         uint256 credits; // [0, 1000]
         uint256 year; //year you are asking for the scholarship [1, 3]
@@ -78,8 +79,7 @@ contract MyContract {
     }
 
     function addStudent(uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status) public {
-
-        Student memory newStudent = Student(_isee, _crediti, _year, uint256(0), uint256(0), false, _status);
+        Student memory newStudent = Student(key, _isee, _crediti, _year, uint256(0), uint256(0), false, _status);
 
         newStudent.eligible = isEligible(newStudent);
         if(newStudent.eligible)
@@ -106,6 +106,8 @@ contract MyContract {
         address[] memory sortedArray = keys;
         uint len = sortedArray.length;
 
+        rankedKeys = new address[](0);
+
         if(len == 1) {
             rankedKeys.push(sortedArray[0]);
         }
@@ -114,18 +116,22 @@ contract MyContract {
             // Order students' addresses by looking at their score
             for (uint i = 0; i < len - 1; i++) {
                 for (uint j = i + 1; j < len; j++) {
-                    if (mappingStudents[sortedArray[i]].score < mappingStudents[sortedArray[j]].score) {
+                    if (mappingStudents[sortedArray[i]].score > mappingStudents[sortedArray[j]].score) {
                         // Swap elements
-                        address temp = sortedArray[i];
-                        sortedArray[i] = sortedArray[j];
-                        sortedArray[j] = temp;
+                        //address temp = sortedArray[i];
+                        //sortedArray[i] = sortedArray[j];
+                        //sortedArray[j] = temp;
+                        (sortedArray[i], sortedArray[j]) = (sortedArray[j], sortedArray[i]); 
                     }
                 }
             }
 
+            rankedKeys = sortedArray;
+            /*
             for (uint i = 0; i < len; i++) {
                 rankedKeys.push(sortedArray[i]);
-            }   
+            } 
+            */  
         }
             
     }
@@ -166,8 +172,8 @@ contract MyContract {
     // Checks if a student should be eligible for the scholarship based on its ISEE and credits
     function isEligible(Student memory student) public view returns (bool) {
         bool eligible = true;
-
-        if(student.isee > ISEE_LIMIT || student.credits < CREDITS_PER_YEAR[student.year]) {
+        uint studentYear = student.year-1;
+        if(student.isee > ISEE_LIMIT || student.credits < CREDITS_PER_YEAR[studentYear]) {
             eligible = false;
         }
 
