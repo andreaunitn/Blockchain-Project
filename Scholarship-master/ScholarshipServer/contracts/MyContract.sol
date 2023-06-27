@@ -151,8 +151,8 @@ contract MyContract {
         uint256 funds;
 
         for (uint i = 0; i < len; i++) {
-            if(mappingStudents[rankedKeys[i]].score > 0){
-                isee = mappingStudents[rankedKeys[i]].isee > ISEE_MIN ? mappingStudents[rankedKeys[i]].isee : ISEE_MIN + 1;
+            if(mappingStudents[rankedKeys[i]].eligible){
+                isee = mappingStudents[rankedKeys[i]].isee; //> ISEE_MIN ? mappingStudents[rankedKeys[i]].isee : ISEE_MIN + 1;
 
                 if(mappingStudents[rankedKeys[i]]._status == status.IN_SEDE) {
                     minFund = FUNDS[0];
