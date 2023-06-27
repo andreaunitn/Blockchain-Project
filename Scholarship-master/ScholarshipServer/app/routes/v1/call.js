@@ -29,6 +29,7 @@ router.get('/all', async function (req, res) {
             ISEE: call.ISEE,
 			budget: call.budget,
             credits: call.credits,
+			funds: call.funds,
             averageRating: call.averageRating,
             birthYear: call.birthYear,
             endDate: call.endDate,
@@ -59,6 +60,7 @@ router.get('', async function (req, res) {
 		ISEE: call.ISEE,
 		budget: call.budget,
 		credits: call.credits,
+		funds: call.funds,
 		averageRating: call.averageRating,
 		endDate: call.endDate,
 		self: "/api/v1/calls/" + call.name
@@ -98,10 +100,7 @@ router.get('/ranking', async function (req, res) {
 		operaAccount = accounts[0];
 		let contract = new web3.eth.Contract(contractABI, call.contractAddress);
 
-		contract.methods.getStudents().call({from: operaAccount}).then(result => {
-
-			console.log("STUDENTS: ");
-					
+		contract.methods.getStudents().call({from: operaAccount}).then(result => {			
 			res.status(200).json(result.map(orderedCall => {
 				let status = "IN_SEDE";
 				if(Number(orderedCall._status) == 1){
@@ -164,7 +163,7 @@ router.post('', async function (req, res) {
 	web3.eth.getAccounts().then((accounts) => {
 		operaAccount = accounts[0];
 		contract
-			.deploy({data: bytecode, arguments: [req.body.budget, req.body.ISEE, req.body.name, (req.body.endDate).toString()]})
+			.deploy({data: bytecode, arguments: [req.body.budget, Math.floor(req.body.ISEE/1000), req.body.credits, req.body.funds, req.body.name, (req.body.endDate).toString()]})
 			.send({from: operaAccount})
 			.on("receipt", async (receipt) => {
 				contractAddress = receipt.contractAddress;
@@ -177,6 +176,7 @@ router.post('', async function (req, res) {
 					ISEE: req.body.ISEE,
 					budget: req.body.budget,
 					credits: req.body.credits,
+					funds: req.body.funds,
 					averageRating: req.body.averageRating,
 					endDate: req.body.endDate
 				});

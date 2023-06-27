@@ -1,10 +1,11 @@
-<div>
+<div style="padding-left: 30px; padding-top: 30px;">
     <h2>{{callName}}</h2>
+    <h2>{{rankingInfo}}</h2>
 
     <ul class="list-group" *ngFor="let ranking of rankings">
-        <li *ngIf="session.getItem('address')!= null && ranking.address==session.getItem('address')" class="list-group-item" id="{{ranking.address}}">
-            {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}} euro, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </li>
-        <li class="list-group-item" id="{{ranking.address}}">
-            {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}} euro, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </li>
+        <li *ngIf="checkUser(ranking.address)" class="list-group-item" id="{{ranking.address}}">
+            <b> {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </b></li>
+        <li *ngIf="checkUser(ranking.address)==false"  class="list-group-item" id="{{ranking.address}}">
+            {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </li>
     </ul>
 </div>

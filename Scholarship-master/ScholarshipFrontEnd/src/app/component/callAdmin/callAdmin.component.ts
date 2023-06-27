@@ -23,15 +23,19 @@ export class CallAdminComponent implements OnInit{
   
   }
 
-  async add(name:String, description: string, ISEE: number, budget: number, credits:number, averageRating: number, endDate: Date, event:any){
+  async add(name:String, description: string, ISEE: number, budget: number, credit1:number, credit2:number, credit3:number, fund1:number, fund2:number, fund3:number, averageRating: number, endDate: Date, event:any){
     event.preventDefault();
     this.errorMessage = "";
     
     if(name == undefined || name == "" || description == undefined || description == "" || ISEE == undefined
-        || budget == undefined || credits == undefined || averageRating == undefined || endDate == undefined){
+        || budget == undefined || credit1 == undefined || credit2 == undefined || credit3 == undefined || averageRating == undefined 
+        || fund1 == undefined || fund2 == undefined || fund3 == undefined || endDate == undefined){
       this.errorMessage = "Parameter not defined";
       return false;
     }
+
+    let credits = [Number(credit1), Number(credit2), Number(credit3)];
+    let funds = [Number(fund1), Number(fund2), Number(fund3)];
 
     const body = {
       "name": name,
@@ -39,6 +43,7 @@ export class CallAdminComponent implements OnInit{
       "ISEE": ISEE,
       "budget": budget,
       "credits": credits,
+      "funds": funds,
       "averageRating": averageRating,
       "endDate": new Date(endDate)
     };

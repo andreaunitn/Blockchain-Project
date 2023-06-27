@@ -22,8 +22,8 @@ contract MyContract {
     enum status{ IN_SEDE, PENDOLARE, FUORI_SEDE } //the three allowed statuses for students
 
 
-    uint256 public ISEE_LIMIT = 24000; //maximum allowed ISEE to be eligible
-    uint256 public ISEE_MIN = 2000; //supposed minimum ISEE (for scholarship computation)
+    uint256 public ISEE_LIMIT = 24; //maximum allowed ISEE to be eligible
+    uint256 public ISEE_MIN = 2; //supposed minimum ISEE (for scholarship computation)
     uint256[] public CREDITS_PER_YEAR = [0, 45, 85]; //required credits for each year of the bachelor to be eligible
     uint256[] public FUNDS = [1300, 1800, 3079]; //minimum scholarsip value for each student status (max is double)
     uint256 public BUDGET; //entire budget for the scholarships
@@ -37,15 +37,21 @@ contract MyContract {
 
     /////////////////////////////////////////////////////////////////////
 
-    constructor(uint256 budget, uint256 isee_limit, string memory name, string memory date) {
+    constructor(uint256 budget, uint256 isee_limit, uint256[] memory credits, uint256[] memory funds, string memory name, string memory date) {
         ISEE_LIMIT = isee_limit;
         BUDGET = budget;
+        CREDITS_PER_YEAR = credits;
+        FUNDS = funds;
         NAME = name;
         DATE = date;
     }
 
     function getBudget() public view returns (uint256) {
         return BUDGET;
+    }
+
+    function getCredit() public view returns (uint256[] memory) {
+        return CREDITS_PER_YEAR;
     }
 
     function incrementBudget() public {
@@ -89,7 +95,6 @@ contract MyContract {
             keys.push(key);
 
         mappingStudents[key] = newStudent;
-        
     }
 
     function getStudentCount() public view returns (uint256) {

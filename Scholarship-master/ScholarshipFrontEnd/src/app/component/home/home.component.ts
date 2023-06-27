@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit{
         //console.log(data);
         if (data.length > 0) {
           for (i = 0; i < data.length; i++) {
-            this.calls[i] = new Call(data[i].name, data[i].description, data[i].ISEE, data[i].budget, data[i].credits, data[i].averageRating, data[i].endDate);
+            this.calls[i] = new Call(data[i].name, data[i].description, data[i].ISEE, data[i].budget, data[i].credits, data[i].funds, data[i].averageRating, data[i].endDate);
           }
         }
     }), catchError(error => {
@@ -120,7 +120,7 @@ export class HomeComponent implements OnInit{
       // @ts-ignore
       callInfo = "<b>Call:</b> " + this.callSelected.name + "<br><b>Description:</b> " + this.callSelected.description + "<br>";
       // @ts-ignore
-      callInfo += "<br><br><h2>Requirements</h2><b>ISEE:</b> " + this.callSelected.ISEE + "<br><b>Budget:</b> " + this.callSelected.budget + "<br><b>Credits:</b> " + this.callSelected.credits + "<br><b>Average rating:</b> " + this.callSelected.averageRating + "<br>";
+      callInfo += "<br><br><h2>Requirements</h2><b>ISEE:</b> " + this.callSelected.ISEE + "<br><b>Budget:</b> " + this.callSelected.budget + "<br><b>Credits per year:</b> " + this.callSelected.credits + "<br><b>FUnds per year:</b> " + this.callSelected.funds + "<br><b>Average rating:</b> " + this.callSelected.averageRating + "<br>";
       
       // @ts-ignore
       let eD = new Date(this.callSelected?.endDate);

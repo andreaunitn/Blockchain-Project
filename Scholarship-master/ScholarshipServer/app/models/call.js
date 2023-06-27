@@ -8,7 +8,8 @@ module.exports = mongoose.model('call', new Schema({
     description: String,
     ISEE: Number,
     budget: Number,
-    credits: Number,
+    credits: [Number],
+    funds: [Number],
     averageRating: Number,
     endDate: Date
 }));
