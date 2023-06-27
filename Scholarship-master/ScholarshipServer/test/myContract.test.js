@@ -3,24 +3,38 @@ const MyContract = artifacts.require("MyContract");
 contract("MyContract", (accounts) => {
     let contract;
 
-    //uint256 budget, uint256 isee_limit, uint256[] memory credits, uint256[] memory funds, string memory name, string memory date
     before(async () => {
-        contract = await MyContract.deployed(500000, 100, [0,60,120], [1200, 1900, 2850], "First call", "25/07/2023");
-    })
+        contract = await MyContract.deployed(500000, 100, [0, 60, 120], [1200, 1900, 2850], "First call", "25/07/2023");
+    });
 
     describe("Add new student", async () => {
-        before("add a new student", async () => {
-            //uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status
-            await contract.addStudent(10,80, 2, accounts[0], 1, {from: accounts[0]});
-            expectedStudent = [accounts[0],10n, 80n, 2n, 10n, 0n, true, 1n] 
-        })
+        let expectedStudent;
 
-        it("can fetch student inserted", async() => {
+        before("add a new student", async () => {
+            await contract.addStudent(10, 80, 2, accounts[0], 1, { from: accounts[0] });
+            expectedStudent = [accounts[0], 10, 80, 2, 10, 0, true, 1];
+        });
+
+        it("can fetch student inserted", async () => {
             const student = await contract.getStudent(accounts[0]);
-            assert.equal(student, expectedStudent, "OK");
-        })
+
+            const studentParsed = [
+                student.accountAddress,
+                Number(student.isee),
+                Number(student.credits),
+                Number(student.year),
+                Number(student.score),
+                Number(student.funds),
+                student.eligible,
+                Number(student._status)
+            ];
+
+            assert.deepEqual(studentParsed, expectedStudent, "OK");
+        });
     });
-})
+});
+
+
 
 /*
 address accountAddress; //address of the account of the student
