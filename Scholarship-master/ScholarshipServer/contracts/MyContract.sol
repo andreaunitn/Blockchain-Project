@@ -13,7 +13,7 @@ contract MyContract {
         uint256 isee; // [1, 1000000]
         uint256 credits; // [0, 1000]
         uint256 year; //year you are asking for the scholarship [1, 3]
-        uint256 score; //computed for ranking
+        uint256 score; //computed for ranking 
         uint256 funds; //scholarship value for the student
         bool eligible; // true/false
         status _status;
@@ -151,24 +151,25 @@ contract MyContract {
         uint256 funds;
 
         for (uint i = 0; i < len; i++) {
+            if(mappingStudents[rankedKeys[i]].score > 0){
+                isee = mappingStudents[rankedKeys[i]].isee > ISEE_MIN ? mappingStudents[rankedKeys[i]].isee : ISEE_MIN + 1;
 
-            isee = mappingStudents[rankedKeys[i]].isee > ISEE_MIN ? mappingStudents[rankedKeys[i]].isee : ISEE_MIN + 1;
+                if(mappingStudents[rankedKeys[i]]._status == status.IN_SEDE) {
+                    minFund = FUNDS[0];
+                } else if (mappingStudents[rankedKeys[i]]._status == status.PENDOLARE) {
+                    minFund = FUNDS[1];
+                } else if (mappingStudents[rankedKeys[i]]._status == status.FUORI_SEDE) {
+                    minFund = FUNDS[2];
+                }
 
-            if(mappingStudents[rankedKeys[i]]._status == status.IN_SEDE) {
-                minFund = FUNDS[0];
-            } else if (mappingStudents[rankedKeys[i]]._status == status.PENDOLARE) {
-                minFund = FUNDS[1];
-            } else if (mappingStudents[rankedKeys[i]]._status == status.FUORI_SEDE) {
-                minFund = FUNDS[2];
-            }
+                funds = uint256(int256((minFund / (ISEE_LIMIT - ISEE_MIN))) * (int256(ISEE_MIN) - int256(isee)) + 2 * int256(minFund));
 
-            funds = uint256(int256((minFund / (ISEE_LIMIT - ISEE_MIN))) * (int256(ISEE_MIN) - int256(isee)) + 2 * int256(minFund));
-
-            if(budget >= funds) {
-                budget = budget - funds;
-                mappingStudents[rankedKeys[i]].funds = funds;
-            } else {
-                return;
+                if(budget >= funds) {
+                    budget = budget - funds;
+                    mappingStudents[rankedKeys[i]].funds = funds;
+                } else {
+                    return;
+                }
             }
         }
 

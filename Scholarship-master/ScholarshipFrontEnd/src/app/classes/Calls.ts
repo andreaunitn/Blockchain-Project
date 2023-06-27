@@ -5,17 +5,15 @@ export class Call{
     budget: number;
     credits: [number];
     funds: [number];    
-    averageRating: number;
     endDate: Date;
     
-    constructor(name: string, description: string, ISEE: number, budget: number, credits: [number], funds: [number], averageRating: number, endDate: Date) {
+    constructor(name: string, description: string, ISEE: number, budget: number, credits: [number], funds: [number], endDate: Date) {
       this.name = name;
       this.description = description;
       this.ISEE = ISEE;
       this.budget = budget;
       this.credits = credits;
       this.funds = funds;
-      this.averageRating = averageRating;
       this.endDate = endDate;
     }
 }

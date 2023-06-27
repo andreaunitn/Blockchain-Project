@@ -6,6 +6,7 @@ const fetch = require('node-fetch')
 const Provider = require('@truffle/hdwallet-provider');
 const dotenv = require('dotenv').config({path: __dirname + "/../../../.env"});
 const { Web3 } = require('web3');
+const RequestCall = require('../../models/requestCall');
 var provider = new Provider({privateKeys: [process.env.OPERA_PRIVATE_KEY], providerOrUrl: 'http://127.0.0.1:7545'});
 const web3 = new Web3(provider);
 const fs = require("fs");
@@ -30,7 +31,6 @@ router.get('/all', async function (req, res) {
 			budget: call.budget,
             credits: call.credits,
 			funds: call.funds,
-            averageRating: call.averageRating,
             birthYear: call.birthYear,
             endDate: call.endDate,
 			self: "/api/v1/calls/" + call.name
@@ -61,7 +61,6 @@ router.get('', async function (req, res) {
 		budget: call.budget,
 		credits: call.credits,
 		funds: call.funds,
-		averageRating: call.averageRating,
 		endDate: call.endDate,
 		self: "/api/v1/calls/" + call.name
 	});
@@ -177,7 +176,6 @@ router.post('', async function (req, res) {
 					budget: req.body.budget,
 					credits: req.body.credits,
 					funds: req.body.funds,
-					averageRating: req.body.averageRating,
 					endDate: req.body.endDate
 				});
 			
@@ -186,23 +184,8 @@ router.post('', async function (req, res) {
 					message: "Created correctly",
 					self: "/api/v1/calls/" + newCall.name
 				});
-				/*
-				newContract = new web3.eth.Contract(contractABI, receipt.contractAddress);
-				*/
 			})
-			.then((initialContract) => {
-				////////////////////////////////////////////////////////
-				// EXAMPLE OF INTERACTION WITH THE SMART CONTRACT //////
-				///////////////////////////////////////////////////////
-				/*
-				newContract.methods.getBudget().call().then(response => console.log(Number(response)));
-				newContract.methods.incrementBudget().send({from: operaAccount}).then(response => {					
-					console.log("Increase");
-					newContract.methods.getBudget().call().then(response => console.log(Number(response)));
-				}
-				);
-				*/
-			})
+			.then((initialContract) => {})
 	})
 });
 
@@ -241,14 +224,21 @@ router.post('/computeRanking', async function (req, res) {
 		operaAccount = accounts[0];
 		let contract = new web3.eth.Contract(contractABI, call.contractAddress);
 		contract.methods.rankStudents().send({from: operaAccount}).then(response => {
-				console.log("Ranking completed");
-				console.log(response);
+				//console.log("Ranking completed");
 				contract.methods.assignFunding().send({from: operaAccount}).then(response => {
-					console.log("Funding assignment completed");
-					res.status(200).json({
-						message: "Completed"
-					});
+					//console.log("Funding assignment completed");
 					
+					contract.methods.getStudents().call({from: operaAccount}).then(async result => {
+						console.log(result);	
+						for(let i = 0; i < result.length; i++){
+							if(result[i].funds > 0){
+								await RequestCall.updateOne({'name': req.body.name, "address": (result[i].accountAddress).toLowerCase()}, {"released": true, "fund": Number(result[i].funds)});
+							}
+						}		
+						res.status(200).json({
+							message: "Completed"
+						});
+					}).catch(err => console.log(err));
 				})
 		})
 	})

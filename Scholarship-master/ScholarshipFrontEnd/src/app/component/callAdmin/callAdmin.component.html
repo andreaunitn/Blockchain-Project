@@ -32,10 +32,6 @@
             <input matInput type="number" style="width:25%; float:right;" id="fund3" [min]="0" [max]="10000" value="120" #fund3 required>
           </mat-form-field><br>
           <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label> Average rating: </mat-label>
-            <input matInput type="number" id="averageRating" [min]="0" max="30" value="30" #averageRating placeholder="Average Rating" required>
-          </mat-form-field><br>
-          <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Choose the end date</mat-label>
             <input matInput [matDatepicker]="picker" id="endDate" #endDate>
             <mat-hint>MM/DD/YYYY</mat-hint>
@@ -43,7 +39,7 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field><br>       
         <span style="padding-left: 45%"></span>
-        <button mat-raised-button color="primary" (click)="add(name.value, description.value, $any(ISEE.value), $any(BUDGET.value), $any(credit1.value), $any(credit2.value), $any(credit3.value), $any(fund1.value), $any(fund2.value),$any(fund3.value), $any(averageRating.value), $any(endDate.value), $event)">Add</button>
+        <button mat-raised-button color="primary" (click)="add(name.value, description.value, $any(ISEE.value), $any(BUDGET.value), $any(credit1.value), $any(credit2.value), $any(credit3.value), $any(fund1.value), $any(fund2.value),$any(fund3.value), $any(endDate.value), $event)">Add</button>
       </form><br>
     </div>
   </div>

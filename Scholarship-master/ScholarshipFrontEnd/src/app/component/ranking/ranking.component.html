@@ -2,10 +2,23 @@
     <h2>{{callName}}</h2>
     <h2>{{rankingInfo}}</h2>
 
-    <ul class="list-group" *ngFor="let ranking of rankings">
-        <li *ngIf="checkUser(ranking.address)" class="list-group-item" id="{{ranking.address}}">
-            <b> {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </b></li>
-        <li *ngIf="checkUser(ranking.address)==false"  class="list-group-item" id="{{ranking.address}}">
-            {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </li>
-    </ul>
+    <div *ngIf="assignedCount > 0">
+    <h2>Request Satisfied</h2>
+        <ul class="list-group" *ngFor="let ranking of assignedRankings">
+            <li *ngIf="checkUser(ranking.address)" class="list-group-item" id="{{ranking.address}}">
+                <b> {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </b></li>
+            <li *ngIf="checkUser(ranking.address)==false"  class="list-group-item" id="{{ranking.address}}">
+                {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </li>
+        </ul>
+    </div>
+
+    <div *ngIf="unassignedCount > 0">
+        <h2>Request not satisfied</h2>
+            <ul class="list-group" *ngFor="let ranking of unassignedRankings">
+                <li *ngIf="checkUser(ranking.address)" class="list-group-item" id="{{ranking.address}}">
+                    <b> {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </b></li>
+                <li *ngIf="checkUser(ranking.address)==false"  class="list-group-item" id="{{ranking.address}}">
+                    {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </li>
+            </ul>
+        </div>
 </div>

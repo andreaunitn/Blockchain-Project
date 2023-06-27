@@ -33,11 +33,12 @@ router.get('/byUser', async function (req, res) {
 	let requestCalls = await RequestCall.find({"address": req.query.address});
 	res.status(200).json(requestCalls.map(rC => {
 		return {
-      name: rC.name, 
-      address: rC.address, 
-      result: rC.result,
-      dateTime: rC.dateTime,
-      message: rC.message,
+			name: rC.name, 
+			address: rC.address, 
+			eligible: rC.eligible, 
+			released: rC.released,
+			fund: rC.fund,
+			dateTime: rC.dateTime,
 			self: "/api/v1/requestCalls/byUser/" + rC.address
 		}
 	}));
@@ -73,25 +74,20 @@ router.post('', async function (req, res) {
   .then(response => JSON.parse(response)));
   user = user.user;
 
-  let requestResult = true;
-
-  if(user.ISEE > call.ISEE || user.averageRating < call.averageRating || user.credits < call.credits){
-    requestResult = false;
+  let eligible = true;
+  if(user.ISEE > call.ISEE || user.credits < call.credits[user.uniYear-1]){
+	eligible = false;
   }
 
   var dateTime = new Date();
-  var message = "Request in list";
-
-  if(requestResult == false){
-    message = "Requirements not satisfied";  
-  }
   
   const newRequest = await RequestCall.create({
     name: req.body.name, 
     address: req.body.address, 
-    result: requestResult,
+	eligible: eligible,
+    released: false,
+	fund: 0,
     dateTime: dateTime,
-    message: message
   });    
   
   file = fs.readFileSync(path.resolve(__dirname, "../../../build/contracts/MyContract.json"));
@@ -113,25 +109,15 @@ router.post('', async function (req, res) {
 	  console.log(user);
 	  let isee = Math.floor(user.ISEE/1000);
 	  contract.methods.addStudent(isee, user.credits, user.uniYear, req.body.address, statusIndex).send({from:operaAccount}).then(response => {
-			
-			contract.methods.getStudent(req.body.address).call().then(response => {
-				const student = {
-					isee: Number(response.isee),
-					crediti: Number(response.credits),
-					year: Number(response.year),
-					score: Number(response.score)
-				};
-				console.log(student);
-
-				res.status(200).json({
-					name: newRequest.name, 
-					address: newRequest.address, 
-					result: newRequest.requestResult,
-					dateTime: newRequest.dateTime,
-					message: newRequest.message,
-					self: "/api/v1/requestCall"
-				});
-			})
+			res.status(200).json({
+				name: newRequest.name, 
+				address: newRequest.address,
+				eligible: newRequest.eligible, 
+				released: newRequest.released,
+				fund: newRequest.fund,
+				dateTime: newRequest.dateTime,
+				self: "/api/v1/requestCall"
+			});
 	  }).catch(err => console.log(err));
   })
 });

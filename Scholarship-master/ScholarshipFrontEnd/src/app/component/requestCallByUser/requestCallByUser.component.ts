@@ -35,7 +35,7 @@ export class RequestCallByUserComponent implements OnInit{
         console.log(data);
         if (data.length > 0) {
           for (i = 0; i < data.length; i++) {
-            this.requestCalls[i] = new RequestCall(data[i].name, data[i].address, data[i].message, data[i].dateTime, data[i].result);
+            this.requestCalls[i] = new RequestCall(data[i].name, data[i].address, data[i].dateTime, data[i].eligible, data[i].released, data[i].fund);
           }
         }
     }), catchError(error => {
@@ -69,12 +69,14 @@ export class RequestCallByUserComponent implements OnInit{
       this.getRequestCall(callDetailName);
 
       // @ts-ignore
-      requestCallInfo = "<b>Call:</b> " + this.requestCallSelected.name + "<br><b>Message:</b> " + this.requestCallSelected?.message + "<br>";
+      requestCallInfo = "<b>Call:</b> " + this.requestCallSelected.name + "<br>";
       requestCallInfo += "<b>Result:</b> ";
-      if(this.requestCallSelected?.result == true){
-        requestCallInfo += "Accepted";
+      if(this.requestCallSelected?.eligible == false){
+        requestCallInfo += "Request rejected: requirements not satisfied";
+      } else if(this.requestCallSelected?.eligible == true && this.requestCallSelected?.released == true){
+        requestCallInfo += "Fund assigned: " + this.requestCallSelected.fund + " euro";
       } else {
-        requestCallInfo += "Rejected";
+        requestCallInfo += "Request accepted, waiting for ranking and funding assignment";
       }
 
       // @ts-ignore

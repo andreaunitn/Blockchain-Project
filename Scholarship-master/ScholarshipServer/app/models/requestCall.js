@@ -6,8 +6,9 @@ module.exports = mongoose.model('requestCall', new Schema({
 	name: String,
     address: String,
     dateTime: Date,
-    result: Boolean,
-    message: String
+    eligible: Boolean,
+    released: Boolean,
+    fund: Number
 }));
 
     

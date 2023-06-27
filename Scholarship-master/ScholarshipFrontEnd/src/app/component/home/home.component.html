@@ -24,6 +24,7 @@
     <div class="call">
         <div id="callInfoModule" style="display: none;">
             <h2 style="padding-top: 20px;"><b>CALL DETAIL</b></h2>
+            <h3 style="color:red" id="callApply"></h3>
             <div id="callInfo"></div>
             <br>
             <h2 style="color:red" *ngIf="verifyEndDate() == true && session.getItem('fiscalCode') == null && session.getItem('admin') == null">Login to apply</h2>

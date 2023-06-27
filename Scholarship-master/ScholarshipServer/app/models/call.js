@@ -10,7 +10,6 @@ module.exports = mongoose.model('call', new Schema({
     budget: Number,
     credits: [Number],
     funds: [Number],
-    averageRating: Number,
     endDate: Date
 }));
 

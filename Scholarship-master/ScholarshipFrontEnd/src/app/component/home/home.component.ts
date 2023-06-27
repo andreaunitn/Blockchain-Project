@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit{
   async getCalls(){
     // @ts-ignore
     document.getElementById("callInfoModule").style.display = 'none';
+    // @ts-ignore  
+    document.getElementById("callApply").innerHTML = "";
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/call/all`, {headers: headers}).pipe(map(data => {
         let i;
@@ -33,7 +35,7 @@ export class HomeComponent implements OnInit{
         //console.log(data);
         if (data.length > 0) {
           for (i = 0; i < data.length; i++) {
-            this.calls[i] = new Call(data[i].name, data[i].description, data[i].ISEE, data[i].budget, data[i].credits, data[i].funds, data[i].averageRating, data[i].endDate);
+            this.calls[i] = new Call(data[i].name, data[i].description, data[i].ISEE, data[i].budget, data[i].credits, data[i].funds, data[i].endDate);
           }
         }
     }), catchError(error => {
@@ -76,11 +78,12 @@ export class HomeComponent implements OnInit{
       };
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
       await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/requestCall', body, {headers: headers}).pipe(map(data => {
-        
+        // @ts-ignore  
+        document.getElementById("callApply").innerHTML = "Request performed";
       }),catchError(error => {
-        let errore = error.error.message;
-        if(errore == undefined){
-          errore = "Server error";
+        if(error.status == 409){
+          // @ts-ignore   
+          document.getElementById("callApply").innerHTML = "Request already performed";
         }
         return of([]);
       })));
@@ -94,7 +97,7 @@ export class HomeComponent implements OnInit{
     };
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/call/computeRanking', body, {headers: headers}).pipe(map(data => {
-      console.log(data);
+      //console.log(data);
     }),catchError(error => {
       let errore = error.error.message;
       if(errore == undefined){
@@ -107,6 +110,8 @@ export class HomeComponent implements OnInit{
   callDetail(event: any) {
     // @ts-ignore
     document.getElementById("callInfoModule").style.display = 'block';
+    // @ts-ignore  
+    document.getElementById("callApply").innerHTML = "";
     let callDetailName;
 
     if (event != undefined) {
@@ -120,15 +125,13 @@ export class HomeComponent implements OnInit{
       // @ts-ignore
       callInfo = "<b>Call:</b> " + this.callSelected.name + "<br><b>Description:</b> " + this.callSelected.description + "<br>";
       // @ts-ignore
-      callInfo += "<br><br><h2>Requirements</h2><b>ISEE:</b> " + this.callSelected.ISEE + "<br><b>Budget:</b> " + this.callSelected.budget + "<br><b>Credits per year:</b> " + this.callSelected.credits + "<br><b>FUnds per year:</b> " + this.callSelected.funds + "<br><b>Average rating:</b> " + this.callSelected.averageRating + "<br>";
+      callInfo += "<br><br><h2>Requirements</h2><b>ISEE:</b> " + this.callSelected.ISEE + "<br><b>Budget:</b> " + this.callSelected.budget + "<br><b>Credits per year:</b> " + this.callSelected.credits + "<br><b>Funds per year:</b> " + this.callSelected.funds + "<br>";
       
       // @ts-ignore
       let eD = new Date(this.callSelected?.endDate);
       // @ts-ignore
       callInfo += "<br><b>End date: </b> " + eD.getDate() + "/" + (eD.getMonth() + 1) + "/" + eD.getFullYear(); 
 
-
-      
       // @ts-ignore  
       document.getElementById("callInfo").innerHTML = callInfo;
     }
