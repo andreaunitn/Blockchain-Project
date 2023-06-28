@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Uni = require('../../models/university');
-const verifyToken = require('../../middleware/auth');
 
 // ---------------------------------------------------------
 // route to get university career information

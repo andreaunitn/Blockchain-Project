@@ -1,10 +1,6 @@
 const express = require('express');
-var http = require('http');
-const request = require('request-promise');
-const fetch = require("node-fetch");
 const router = express.Router();
 const RequestCall = require('../../models/requestCall');
-const verifyToken = require('../../middleware/auth');
 const requestPromise = require('request-promise');
 const dotenv = require('dotenv').config({path: __dirname + "/../../../.env"});
 const Provider = require('@truffle/hdwallet-provider');

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../../models/user');
-const verifyToken = require('../../middleware/auth');
 const requestPromise = require('request-promise');
 
 

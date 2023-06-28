@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Call = require('../../models/call');
-const verifyToken = require('../../middleware/auth');
-const fetch = require('node-fetch')
 const Provider = require('@truffle/hdwallet-provider');
 const dotenv = require('dotenv').config({path: __dirname + "/../../../.env"});
 const { Web3 } = require('web3');
@@ -225,9 +223,8 @@ router.post('/computeRanking', async function (req, res) {
 		let contract = new web3.eth.Contract(contractABI, call.contractAddress);
 		contract.methods.rankStudents().send({from: operaAccount}).then(response => {
 				//console.log("Ranking completed");
-				contract.methods.assignFunding().send({from: operaAccount}).then(response => {
+				contract.methods.assignFunding().send({from: operaAccount}).then(async response => {
 					//console.log("Funding assignment completed");
-					
 					contract.methods.getStudents().call({from: operaAccount}).then(async result => {
 						console.log(result);	
 						for(let i = 0; i < result.length; i++){

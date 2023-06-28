@@ -125,7 +125,7 @@ export class HomeComponent implements OnInit{
       // @ts-ignore
       callInfo = "<b>Call:</b> " + this.callSelected.name + "<br><b>Description:</b> " + this.callSelected.description + "<br>";
       // @ts-ignore
-      callInfo += "<br><br><h2>Requirements</h2><b>ISEE:</b> " + this.callSelected.ISEE + "<br><b>Budget:</b> " + this.callSelected.budget + "<br><b>Credits per year:</b> " + this.callSelected.credits + "<br><b>Funds per year:</b> " + this.callSelected.funds + "<br>";
+      callInfo += "<br><br><h2>Requirements</h2><b>ISEE:</b> " + this.callSelected.ISEE + "<br><b>Total budget:</b> " + this.callSelected.budget + "<br><b>Credits per year:</b> " + this.callSelected.credits + "<br><b>Funds per year:</b> " + this.callSelected.funds + "<br>";
       
       // @ts-ignore
       let eD = new Date(this.callSelected?.endDate);

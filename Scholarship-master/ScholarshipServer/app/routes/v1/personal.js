@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Personal = require('../../models/personal');
-const verifyToken = require('../../middleware/auth');
 
 // ---------------------------------------------------------
 // route to get personal information

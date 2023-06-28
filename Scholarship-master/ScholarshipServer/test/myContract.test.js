@@ -118,9 +118,6 @@ contract("MyContract", (accounts) => {
             assert.equal(rankedKeys[0], expectedStudent2[0], "Address");
             assert.equal(rankedKeys[1], expectedStudent[0], "Address");
         });
-
-
-
     });
 
 
@@ -168,7 +165,7 @@ contract("MyContract", (accounts) => {
         });
 
     });
-
+    
     // To be fixed
     describe("Assign funds (to be fixed)", async () => {
 
@@ -182,10 +179,11 @@ contract("MyContract", (accounts) => {
             //1200/98 * -98 + 2400 = 1200
             assert.equal(Number(student1.funds), 1200, "Funds1");  //Looks like something is wrong in funds assignment
             assert.equal(Number(student2.funds), 1900*2, "Funds2");
-            assert.equal(Number(student3.funds), Number(2850/(100-2)*(2-60)+2*2850), "Funds3"); //Rounding problem
+            assert.equal(Number(student3.funds), Number(2*2850 - Math.floor((2850*(60-2)/(100-2)))), "Funds3"); //Rounding problem
         });
 
     });
+    
 });
 
 /*

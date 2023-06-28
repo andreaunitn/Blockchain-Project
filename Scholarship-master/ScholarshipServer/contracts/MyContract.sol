@@ -45,7 +45,7 @@ contract MyContract {
         NAME = name;
         DATE = date;
     }
-
+    /*
     function getBudget() public view returns (uint256) {
         return BUDGET;
     }
@@ -57,7 +57,7 @@ contract MyContract {
     function incrementBudget() public {
         BUDGET++;
     }
-
+    */
     /////////////////////////////////////////////////////////////////////
     // STUDENTS
 
@@ -123,20 +123,12 @@ contract MyContract {
                 for (uint j = i + 1; j < len; j++) {
                     if (mappingStudents[sortedArray[i]].score > mappingStudents[sortedArray[j]].score) {
                         // Swap elements
-                        //address temp = sortedArray[i];
-                        //sortedArray[i] = sortedArray[j];
-                        //sortedArray[j] = temp;
                         (sortedArray[i], sortedArray[j]) = (sortedArray[j], sortedArray[i]); 
                     }
                 }
             }
 
             rankedKeys = sortedArray;
-            /*
-            for (uint i = 0; i < len; i++) {
-                rankedKeys.push(sortedArray[i]);
-            } 
-            */  
         }
             
     }
@@ -161,8 +153,9 @@ contract MyContract {
                 } else if (mappingStudents[rankedKeys[i]]._status == status.FUORI_SEDE) {
                     minFund = FUNDS[2];
                 }
-
-                funds = uint256(int256((minFund / (ISEE_LIMIT - ISEE_MIN))) * (int256(ISEE_MIN) - int256(isee)) + 2 * int256(minFund));
+              
+                //funds = uint256(int256((minFund / (ISEE_LIMIT - ISEE_MIN))) * (int256(ISEE_MIN) - int256(isee)) + 2 * int256(minFund))
+                funds = uint256(2 * int256(minFund) - int256((uint256(int256(minFund) * (int256(isee) - int256(ISEE_MIN))) / (ISEE_LIMIT - ISEE_MIN))));
 
                 if(budget >= funds) {
                     budget = budget - funds;
@@ -172,7 +165,6 @@ contract MyContract {
                 }
             }
         }
-
     }
 
     // Checks if a student should be eligible for the scholarship based on its ISEE and credits

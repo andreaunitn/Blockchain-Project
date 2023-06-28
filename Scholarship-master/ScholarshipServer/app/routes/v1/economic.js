@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Eco = require('../../models/economic');
-const verifyToken = require('../../middleware/auth');
 
 // ---------------------------------------------------------
 // route to get economic information
