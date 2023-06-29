@@ -98,11 +98,11 @@ export class HomeComponent implements OnInit{
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/call/computeRanking', body, {headers: headers}).pipe(map(data => {
       //console.log(data);
+      // @ts-ignore  
+      document.getElementById("callApply").innerHTML = "Ranking computed";
     }),catchError(error => {
-      let errore = error.error.message;
-      if(errore == undefined){
-        errore = "Server error";
-      }
+      // @ts-ignore  
+      document.getElementById("callApply").innerHTML = "Error in compute ranking";
       return of([]);
     })));
 }

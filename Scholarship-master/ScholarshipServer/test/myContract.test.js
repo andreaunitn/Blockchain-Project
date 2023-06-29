@@ -166,8 +166,8 @@ contract("MyContract", (accounts) => {
 
     });
     
-    // To be fixed
-    describe("Assign funds (to be fixed)", async () => {
+
+    describe("Assign funds", async () => {
 
         it("check each students gets the correct amount", async () => {
             
