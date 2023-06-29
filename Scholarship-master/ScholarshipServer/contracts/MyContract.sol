@@ -45,19 +45,7 @@ contract MyContract {
         NAME = name;
         DATE = date;
     }
-    /*
-    function getBudget() public view returns (uint256) {
-        return BUDGET;
-    }
 
-    function getCredit() public view returns (uint256[] memory) {
-        return CREDITS_PER_YEAR;
-    }
-
-    function incrementBudget() public {
-        BUDGET++;
-    }
-    */
     /////////////////////////////////////////////////////////////////////
     // STUDENTS
 
