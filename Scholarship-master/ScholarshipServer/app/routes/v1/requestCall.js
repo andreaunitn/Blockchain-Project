@@ -115,7 +115,12 @@ router.post('', async function (req, res) {
   	  let contract = new web3.eth.Contract(contractABI, call.contractAddress);
 	  console.log(user);
 	  let isee = Math.floor(user.ISEE/1000);
-	  contract.methods.addStudent(isee, user.credits, user.uniYear, req.body.address, statusIndex).send({from:operaAccount}).then(response => {
+	  contract.methods.addStudent(isee, user.credits, user.uniYear, req.body.address, statusIndex).call({from:operaAccount}).then(async response => {
+		
+		if(response == false) {
+			res.status(400).json({ success: false, message: 'Invalid parameters' });
+			return;
+		}
 			res.status(200).json({
 				name: newRequest.name, 
 				address: newRequest.address,

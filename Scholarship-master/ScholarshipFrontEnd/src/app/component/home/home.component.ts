@@ -89,6 +89,10 @@ export class HomeComponent implements OnInit{
           // @ts-ignore   
           document.getElementById("callApply").innerHTML = "Missing student data";
         }
+        if(error.status == 400) {
+          // @ts-ignore
+          document.getElementById("callApply").innerHTML = "Invalid parameters";
+        }
         return of([]);
       })));
   }

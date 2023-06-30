@@ -7,6 +7,32 @@ contract("MyContract", (accounts) => {
         contract = await MyContract.deployed(500000, 100, [0, 60, 120], [1200, 1900, 2850], "First call", "25/07/2023");
     });
 
+    describe("Contract deployment and instantiation", async () => {
+        it("check contract attributes", async () => {
+            const isee_limit = await contract.ISEE_LIMIT();
+            const budget = await contract.BUDGET();
+            const credit_first_year = await contract.CREDITS_PER_YEAR(0);
+            const credit_second_year = await contract.CREDITS_PER_YEAR(1);
+            const credit_third_year = await contract.CREDITS_PER_YEAR(2);
+            const funds_in_sede = await contract.FUNDS(0);
+            const funds_pendolare = await contract.FUNDS(1);
+            const funds_fuori_sede = await contract.FUNDS(2);
+            const name = await contract.NAME();
+            const date = await contract.DATE();
+            
+            assert.equal(isee_limit, 100);
+            assert.equal(budget, 500000);
+            assert.equal(credit_first_year, 0);
+            assert.equal(credit_second_year, 60);
+            assert.equal(credit_third_year, 120);
+            assert.equal(funds_in_sede, 1200);
+            assert.equal(funds_pendolare, 1900);
+            assert.equal(funds_fuori_sede, 2850);
+            assert.equal(name, "First call");
+            assert.equal(date, "25/07/2023");
+        });
+    });
+
     describe("Add new student", async () => {
         let expectedStudent;
 
@@ -75,7 +101,6 @@ contract("MyContract", (accounts) => {
         });
     
     });
-
 
     describe("Add new student", async () => {
 
