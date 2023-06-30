@@ -27,15 +27,49 @@ router.get('/getAllInfo', async function (req, res) {
 		});
 		return;
 	}
+	
+	var uniInfo 
+	try {
+		uniInfo = await requestPromise("http://localhost:8080/api/v1/university?fiscalCode=" + user.fiscalCode);
+		uniInfo = JSON.parse(uniInfo);	
+	} catch (error) {
+		if (error.statusCode === 404) {
+			res.status(404).json({
+				success: false,
+				message: 'University Career information not found'
+			});
+		}
+		return;
+	}
 
-	let uniInfo = (await requestPromise("http://localhost:8080/api/v1/university?fiscalCode=" + user.fiscalCode)
-	.then(response => JSON.parse(response)));
+	var ecoInfo 
+	try {
+		ecoInfo = await requestPromise("http://localhost:8080/api/v1/economic?fiscalCode=" + user.fiscalCode);
+		ecoInfo = JSON.parse(ecoInfo);	
+	} catch (error) {
+		if (error.statusCode === 404) {
+			res.status(404).json({
+				success: false,
+				message: 'Economic information not found'
+			});
+		}
+		return;
+	}
 
-	let ecoInfo = (await requestPromise("http://localhost:8080/api/v1/economic?fiscalCode=" + user.fiscalCode)
-	.then(response => JSON.parse(response)));
-
-	let personalInfo = (await requestPromise("http://localhost:8080/api/v1/personal?fiscalCode=" + user.fiscalCode)
-	.then(response => JSON.parse(response)));
+	var personalInfo
+	try {
+		personalInfo = await requestPromise("http://localhost:8080/api/v1/personal?fiscalCode=" + user.fiscalCode);
+		personalInfo = JSON.parse(personalInfo);	
+	} catch (error) {
+		if (error.statusCode === 404) {
+			res.status(404).json({
+				success: false,
+				message: 'Personal information not found'
+			});
+		}
+		return;
+	}
+	
 
 	let userInfo = {
 		fiscalCode: user.fiscalCode,

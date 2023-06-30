@@ -85,6 +85,10 @@ export class HomeComponent implements OnInit{
           // @ts-ignore   
           document.getElementById("callApply").innerHTML = "Request already performed";
         }
+        if(error.status == 404){
+          // @ts-ignore   
+          document.getElementById("callApply").innerHTML = "Missing student data";
+        }
         return of([]);
       })));
   }

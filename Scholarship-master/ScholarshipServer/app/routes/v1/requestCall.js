@@ -66,9 +66,20 @@ router.post('', async function (req, res) {
   let call = (await requestPromise("http://localhost:8080/api/v1/call?name=" + req.body.name)
     .then(response => JSON.parse(response)));
 
-  let user = (await requestPromise("http://localhost:8080/api/v1/user/getAllInfo?address=" + req.body.address)
-  .then(response => JSON.parse(response)));
-  user = user.user;
+  var user
+	try {
+		user = await requestPromise("http://localhost:8080/api/v1/user/getAllInfo?address=" + req.body.address);
+		user = JSON.parse(user);
+		user = user.user
+	} catch (error) {
+		if (error.statusCode === 404) {
+			res.status(404).json({
+				success: false,
+				message: 'Missing student data'
+			});
+		}
+		
+	}
 
   let eligible = true;
   if(user.ISEE > call.ISEE || user.credits < call.credits[user.uniYear-1]){
