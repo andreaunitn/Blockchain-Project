@@ -74,7 +74,7 @@ contract MyContract {
 
     function addStudent(uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status) public returns (bool) {
         // input checking
-        if(_isee == 0 || _crediti > 300 || _year < 1 || _year > 3 || _status != status.IN_SEDE || _status != status.IN_SEDE || _status != status.PENDOLARE) {
+        if(_isee == 0 || _crediti > 300 || _year < 1 || _year > 3 || (_status != status.FUORI_SEDE && _status != status.IN_SEDE && _status != status.PENDOLARE)) {
             return false;
         }
 

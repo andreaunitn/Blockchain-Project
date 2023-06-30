@@ -78,7 +78,7 @@ router.post('', async function (req, res) {
 				message: 'Missing student data'
 			});
 		}
-		
+		return;
 	}
 
   let eligible = true;
@@ -87,15 +87,7 @@ router.post('', async function (req, res) {
   }
 
   var dateTime = new Date();
-  
-  const newRequest = await RequestCall.create({
-    name: req.body.name, 
-    address: req.body.address, 
-	eligible: eligible,
-    released: false,
-	fund: 0,
-    dateTime: dateTime,
-  });    
+   
   
   file = fs.readFileSync(path.resolve(__dirname, "../../../build/contracts/MyContract.json"));
   var output = JSON.parse(file);
@@ -121,15 +113,25 @@ router.post('', async function (req, res) {
 			res.status(400).json({ success: false, message: 'Invalid parameters' });
 			return;
 		}
-			res.status(200).json({
-				name: newRequest.name, 
-				address: newRequest.address,
-				eligible: newRequest.eligible, 
-				released: newRequest.released,
-				fund: newRequest.fund,
-				dateTime: newRequest.dateTime,
-				self: "/api/v1/requestCall"
-			});
+
+		const newRequest = await RequestCall.create({
+			name: req.body.name, 
+			address: req.body.address, 
+			eligible: eligible,
+			released: false,
+			fund: 0,
+			dateTime: dateTime,
+		  }); 
+
+		res.status(200).json({
+			name: newRequest.name, 
+			address: newRequest.address,
+			eligible: newRequest.eligible, 
+			released: newRequest.released,
+			fund: newRequest.fund,
+			dateTime: newRequest.dateTime,
+			self: "/api/v1/requestCall"
+		});
 	  }).catch(err => console.log(err));
   })
 });
