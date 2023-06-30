@@ -102,7 +102,6 @@ contract("MyContract", (accounts) => {
     
     });
 
-
     describe("Add new student", async () => {
 
         before("add a new student, eligible", async () => {

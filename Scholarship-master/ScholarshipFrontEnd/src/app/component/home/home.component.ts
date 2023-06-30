@@ -85,6 +85,11 @@ export class HomeComponent implements OnInit{
           // @ts-ignore   
           document.getElementById("callApply").innerHTML = "Request already performed";
         }
+        if(error.status == 400) {
+
+          // @ts-ignore
+          document.getElementById("callApply").innerHTML = "Invalid parameters";
+        }
         return of([]);
       })));
   }
