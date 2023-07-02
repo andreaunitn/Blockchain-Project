@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node index.js",
+    "start": "truffle compile ; node index.js",
     "test": "jest",
     "test:debug": "jest --watch"
   },
