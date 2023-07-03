@@ -42,7 +42,7 @@ contract("MyContract", (accounts) => {
         });
 
         it("can fetch student inserted", async () => {
-            const student = await contract.getStudent(accounts[0]);
+            const student = await contract.mappingStudents(accounts[0]);
 
             const studentParsed = [
                 student.accountAddress,
@@ -84,7 +84,7 @@ contract("MyContract", (accounts) => {
 
         it("check student values are updated, is eligible by isee", async () => {
             
-            const student = await contract.getStudent(accounts[0]);
+            const student = await contract.mappingStudents(accounts[0]);
 
             const studentParsed = [
                 student.accountAddress,
@@ -118,7 +118,7 @@ contract("MyContract", (accounts) => {
 
         it("check student2 values", async () => {
             
-            const student2 = await contract.getStudent(accounts[1]);
+            const student2 = await contract.mappingStudents(accounts[1]);
 
             const studentParsed2 = [
                 student2.accountAddress,
@@ -162,7 +162,7 @@ contract("MyContract", (accounts) => {
 
         it("check student3 values", async () => {
             
-            const student3 = await contract.getStudent(accounts[2]);
+            const student3 = await contract.mappingStudents(accounts[2]);
 
             const studentParsed3 = [
                 student3.accountAddress,
@@ -197,11 +197,10 @@ contract("MyContract", (accounts) => {
         it("check each students gets the correct amount", async () => {
             
             await contract.assignFunding();
-            const student1 = await contract.getStudent(accounts[0]);
-            const student2 = await contract.getStudent(accounts[1]);
-            const student3 = await contract.getStudent(accounts[2]);
+            const student1 = await contract.mappingStudents(accounts[0]);
+            const student2 = await contract.mappingStudents(accounts[1]);
+            const student3 = await contract.mappingStudents(accounts[2]);
 
-            //1200/98 * -98 + 2400 = 1200
             assert.equal(Number(student1.funds), 1200, "Funds1");  //Looks like something is wrong in funds assignment
             assert.equal(Number(student2.funds), 1900*2, "Funds2");
             assert.equal(Number(student3.funds), Number(2*2850 - Math.floor((2850*(60-2)/(100-2)))), "Funds3"); //Rounding problem

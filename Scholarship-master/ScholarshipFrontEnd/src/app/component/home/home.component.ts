@@ -32,7 +32,6 @@ export class HomeComponent implements OnInit{
     await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/call/all`, {headers: headers}).pipe(map(data => {
         let i;
         this.calls = new Array(data.length);
-        //console.log(data);
         if (data.length > 0) {
           for (i = 0; i < data.length; i++) {
             this.calls[i] = new Call(data[i].name, data[i].description, data[i].ISEE, data[i].budget, data[i].credits, data[i].funds, data[i].endDate);
@@ -105,7 +104,6 @@ export class HomeComponent implements OnInit{
     };
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/call/computeRanking', body, {headers: headers}).pipe(map(data => {
-      //console.log(data);
       // @ts-ignore  
       document.getElementById("callApply").innerHTML = "Ranking computed";
     }),catchError(error => {

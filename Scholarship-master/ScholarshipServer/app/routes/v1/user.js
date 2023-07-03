@@ -159,7 +159,6 @@ router.post('/signUp', async function (req, res) {
 	// find the user information
 	let user = await User.find({ $or:[{"address": req.body.address}, {"fiscalCode": req.body.fiscalCode}]});
 	if (user.length != 0) {
-		console.log(user);
 		res.status(409).json({
 			success: false,
 			message: 'User already exists with the same fiscalCode or address'

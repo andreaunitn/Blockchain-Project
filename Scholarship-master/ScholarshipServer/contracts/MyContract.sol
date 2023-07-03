@@ -3,8 +3,6 @@ pragma solidity ^0.8.0;
 
 contract MyContract {
 
-    // Adjustments and imput checking needed to functions
-
     /////////////////////////////////////////////////////////////////////
     // STRUCTS AND GLOBAL VARIABLES
 
@@ -20,7 +18,6 @@ contract MyContract {
     }
 
     enum status{ IN_SEDE, PENDOLARE, FUORI_SEDE } //the three allowed statuses for students
-
 
     uint256 public ISEE_LIMIT = 24; //maximum allowed ISEE to be eligible
     uint256 public ISEE_MIN = 2; //supposed minimum ISEE (for scholarship computation)
@@ -49,30 +46,26 @@ contract MyContract {
     /////////////////////////////////////////////////////////////////////
     // STUDENTS
 
-    function getKeys() public view returns (address[] memory) {
+    function getKeys() external view returns (address[] memory) {
         return keys;
     }
 
-     function getRankedKeys() public view returns (address[] memory) {
+     function getRankedKeys() external view returns (address[] memory) {
         return rankedKeys;
     }
 
-    function getStudent(address key) public view returns (Student memory) {
-        return mappingStudents[key];
-    }
-
-    function getStudents() public view returns (Student[] memory){
-        uint len = rankedKeys.length;
+    function getStudents() external view returns (Student[] memory){
+        uint256 len = rankedKeys.length;
         Student[] memory studentArray = new Student[](len);
 
-        for (uint i = 0; i < len; i++) {
+        for (uint256 i = 0; i < len; i++) {
             studentArray[i] = mappingStudents[rankedKeys[i]];
         }
 
         return studentArray;
     }
 
-    function addStudent(uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status) public returns (bool) {
+    function addStudent(uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status) external  returns (bool){
         // input checking
         if(_isee == 0 || _crediti > 300 || _year < 1 || _year > 3 || (_status != status.FUORI_SEDE && _status != status.IN_SEDE && _status != status.PENDOLARE)) {
             return false;
@@ -92,19 +85,18 @@ contract MyContract {
         return true;
     }
 
-    function getStudentCount() public view returns (uint256) {
+    function getStudentCount() external view returns (uint256) {
         return keys.length;
     }
 
-    function computeScore(Student memory student) public pure returns (uint256) {
-
+    function computeScore(Student memory student) private pure returns (uint256) {
         //To be modified if a different ranking metric is necessary
         return student.isee;
     }
 
-    function rankStudents() public {
+    function rankStudents() external {
         address[] memory sortedArray = keys;
-        uint len = sortedArray.length;
+        uint256 len = sortedArray.length;
 
         rankedKeys = new address[](0);
 
@@ -114,8 +106,8 @@ contract MyContract {
         else 
         {
             // Order students' addresses by looking at their score
-            for (uint i = 0; i < len - 1; i++) {
-                for (uint j = i + 1; j < len; j++) {
+            for (uint256 i = 0; i < len - 1; i++) {
+                for (uint256 j = i + 1; j < len; j++) {
                     if (mappingStudents[sortedArray[i]].score > mappingStudents[sortedArray[j]].score) {
                         // Swap elements
                         (sortedArray[i], sortedArray[j]) = (sortedArray[j], sortedArray[i]); 
@@ -129,15 +121,14 @@ contract MyContract {
     }
 
     //Uses the student's ranking to assign funds to each student until funds are depleted
-    function assignFunding() public {
-
-        uint len = rankedKeys.length;
+    function assignFunding() external {
+        uint256 len = rankedKeys.length;
         uint256 budget = BUDGET;
         uint256 isee = 0;
         uint256 minFund = 0;
         uint256 funds;
 
-        for (uint i = 0; i < len; i++) {
+        for (uint256 i = 0; i < len; i++) {
             if(mappingStudents[rankedKeys[i]].eligible){
                 isee = mappingStudents[rankedKeys[i]].isee > ISEE_MIN ? mappingStudents[rankedKeys[i]].isee : ISEE_MIN;
 
@@ -149,7 +140,6 @@ contract MyContract {
                     minFund = FUNDS[2];
                 }
               
-                //funds = uint256(int256((minFund / (ISEE_LIMIT - ISEE_MIN))) * (int256(ISEE_MIN) - int256(isee)) + 2 * int256(minFund))
                 funds = uint256(2 * int256(minFund) - int256((uint256(int256(minFund) * (int256(isee) - int256(ISEE_MIN))) / (ISEE_LIMIT - ISEE_MIN))));
 
                 if(budget >= funds) {
@@ -163,16 +153,14 @@ contract MyContract {
     }
 
     // Checks if a student should be eligible for the scholarship based on its ISEE and credits
-    function isEligible(Student memory student) public view returns (bool) {
+    function isEligible(Student memory student) private view returns (bool) {
         bool eligible = true;
-        uint studentYear = student.year-1;
+        uint256 studentYear = student.year-1;
         if(student.isee > ISEE_LIMIT || student.credits < CREDITS_PER_YEAR[studentYear]) {
             eligible = false;
         }
 
         return eligible;
     }
-
     /////////////////////////////////////////////////////////////////////
-
 }
