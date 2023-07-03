@@ -19,16 +19,15 @@ contract MyContract {
 
     enum status{ IN_SEDE, PENDOLARE, FUORI_SEDE } //the three allowed statuses for students
 
-    uint256 public ISEE_LIMIT = 24; //maximum allowed ISEE to be eligible
-    uint256 public ISEE_MIN = 2; //supposed minimum ISEE (for scholarship computation)
-    uint256[] public CREDITS_PER_YEAR = [0, 45, 85]; //required credits for each year of the bachelor to be eligible
-    uint256[] public FUNDS = [1300, 1800, 3079]; //minimum scholarsip value for each student status (max is double)
-    uint256 public BUDGET; //entire budget for the scholarships
+    uint256 public immutable ISEE_LIMIT; //maximum allowed ISEE to be eligible
+    uint256 public constant ISEE_MIN = 2; //supposed minimum ISEE (for scholarship computation)
+    uint256 public immutable BUDGET; //entire budget for the scholarships
     string public NAME; //name of scholarship
     string public DATE; //end date to apply for the scholarship
+    uint256[] public CREDITS_PER_YEAR; //required credits for each year of the bachelor to be eligible
+    uint256[] public FUNDS; //minimum scholarsip value for each student status (max is double)
     
     mapping(address => Student) public mappingStudents; //contains the association address->student
-
     address[] public keys; //stores the key of each applying student
     address[] public rankedKeys; //stores the keys of students after rankStudents() gets called
 
@@ -109,7 +108,6 @@ contract MyContract {
             for (uint256 i = 0; i < len - 1; i++) {
                 for (uint256 j = i + 1; j < len; j++) {
                     if (mappingStudents[sortedArray[i]].score > mappingStudents[sortedArray[j]].score) {
-                        // Swap elements
                         (sortedArray[i], sortedArray[j]) = (sortedArray[j], sortedArray[i]); 
                     }
                 }
@@ -139,7 +137,8 @@ contract MyContract {
                 } else if (mappingStudents[rankedKeys[i]]._status == status.FUORI_SEDE) {
                     minFund = FUNDS[2];
                 }
-              
+
+                /// SAFE MATH LIBRARY NOT NEEDED SINCE FROM VERSION 0.8.0 IT IS AUTOMATICALLY IMPLEMENTED          
                 funds = uint256(2 * int256(minFund) - int256((uint256(int256(minFund) * (int256(isee) - int256(ISEE_MIN))) / (ISEE_LIMIT - ISEE_MIN))));
 
                 if(budget >= funds) {
