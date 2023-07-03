@@ -64,11 +64,8 @@ contract MyContract {
         return studentArray;
     }
 
-    function addStudent(uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status) external  returns (bool){
-        // input checking
-        if(_isee == 0 || _crediti > 300 || _year < 1 || _year > 3 || (_status != status.FUORI_SEDE && _status != status.IN_SEDE && _status != status.PENDOLARE)) {
-            return false;
-        }
+    function addStudent(uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status) external{
+        require((_isee > 0 && _crediti < 300 && (_year >= 1 && _year <= 3) && (_status == status.FUORI_SEDE || _status == status.IN_SEDE || _status == status.PENDOLARE)), "Invalid parameter");
 
         Student memory newStudent = Student(key, _isee, _crediti, _year, uint256(0), uint256(0), false, _status);
 
@@ -80,8 +77,6 @@ contract MyContract {
             keys.push(key);
 
         mappingStudents[key] = newStudent;
-
-        return true;
     }
 
     function getStudentCount() external view returns (uint256) {

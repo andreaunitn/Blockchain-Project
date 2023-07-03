@@ -107,11 +107,7 @@ router.post('', async function (req, res) {
   	  let contract = new web3.eth.Contract(contractABI, call.contractAddress);
 	  let isee = Math.floor(user.ISEE/1000);
 	  contract.methods.addStudent(isee, user.credits, user.uniYear, req.body.address, statusIndex).send({from:operaAccount}).then(async response => {
-		if(response == false) {
-			res.status(400).json({ success: false, message: 'Invalid parameters' });
-			return;
-		}
-
+		
 		const newRequest = await RequestCall.create({
 			name: req.body.name, 
 			address: req.body.address, 
@@ -130,7 +126,7 @@ router.post('', async function (req, res) {
 			dateTime: newRequest.dateTime,
 			self: "/api/v1/requestCall"
 		});
-	  }).catch(err => console.log(err));
+	  }).catch(err => res.status(400).json({ success: false, message: 'Invalid parameters' }));
   })
 });
 

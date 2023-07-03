@@ -1,4 +1,5 @@
 const MyContract = artifacts.require("MyContract");
+const truffleAssert = require('truffle-assertions');
 
 contract("MyContract", (accounts) => {
     let contract;
@@ -30,6 +31,12 @@ contract("MyContract", (accounts) => {
             assert.equal(funds_fuori_sede, 2850);
             assert.equal(name, "First call");
             assert.equal(date, "25/07/2023");
+        });
+    });
+
+    describe("Try to add invalid student", async () => {
+        it("require trigger exception", async () => {
+            await truffleAssert.reverts(contract.addStudent(0, 400, 4, accounts[0], 0, { from: accounts[0] }));
         });
     });
 
