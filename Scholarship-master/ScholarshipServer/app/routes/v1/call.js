@@ -226,7 +226,6 @@ router.post('/computeRanking', async function (req, res) {
 				contract.methods.assignFunding().send({from: operaAccount}).then(async response => {
 					//console.log("Funding assignment completed");
 					contract.methods.getStudents().call({from: operaAccount}).then(async result => {
-						console.log(result);	
 						for(let i = 0; i < result.length; i++){
 							if(result[i].funds > 0){
 								await RequestCall.updateOne({'name': req.body.name, "address": (result[i].accountAddress).toLowerCase()}, {"released": true, "fund": Number(result[i].funds)});

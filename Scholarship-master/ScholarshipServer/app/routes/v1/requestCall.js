@@ -105,7 +105,6 @@ router.post('', async function (req, res) {
   web3.eth.getAccounts().then((accounts) => {
 	  operaAccount = accounts[0];
   	  let contract = new web3.eth.Contract(contractABI, call.contractAddress);
-	  console.log(user);
 	  let isee = Math.floor(user.ISEE/1000);
 	  contract.methods.addStudent(isee, user.credits, user.uniYear, req.body.address, statusIndex).send({from:operaAccount}).then(async response => {
 		if(response == false) {
