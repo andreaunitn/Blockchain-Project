@@ -105,8 +105,8 @@ contract("MyContract", (accounts) => {
     describe("Add new student", async () => {
 
         before("add a new student, eligible", async () => {
-            await contract.addStudent(2, 0, 1, accounts[1], 1, { from: accounts[1] });
-            expectedStudent2 = [accounts[1], 2, 0, 1, 2, 0, true, 1];
+            await contract.addStudent(1, 0, 1, accounts[1], 1, { from: accounts[1] });
+            expectedStudent2 = [accounts[1], 1, 0, 1, 1, 0, true, 1];
         });
 
         it("check student2 is inserted in list", async () => {
