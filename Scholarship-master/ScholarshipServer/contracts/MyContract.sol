@@ -72,11 +72,13 @@ contract MyContract {
         return studentArray;
     }
 
-    function addStudent(uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status) public returns (bool) {
+    function addStudent(uint256 _isee, uint256 _crediti, uint256 _year, address key, status _status) public {
         // input checking
+        /*
         if(_isee == 0 || _crediti > 300 || _year < 1 || _year > 3 || (_status != status.FUORI_SEDE && _status != status.IN_SEDE && _status != status.PENDOLARE)) {
             return false;
         }
+        */
 
         Student memory newStudent = Student(key, _isee, _crediti, _year, uint256(0), uint256(0), false, _status);
 
@@ -89,7 +91,7 @@ contract MyContract {
 
         mappingStudents[key] = newStudent;
 
-        return true;
+        //return true;
     }
 
     function getStudentCount() public view returns (uint256) {
