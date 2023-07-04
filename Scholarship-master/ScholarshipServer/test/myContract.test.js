@@ -4,6 +4,12 @@ const truffleAssert = require('truffle-assertions');
 contract("MyContract", (accounts) => {
     let contract;
 
+    describe("Try to instantiate an invalid contract", async () => {
+        it("Triggered require exception", async () => {
+            await truffleAssert.reverts(MyContract.new(0, 0, [0, 60, 350], [1200, 1900, 2850], "First call", "25/07/2023"));
+        });
+    });
+
     before(async () => {
         contract = await MyContract.deployed(500000, 100, [0, 60, 120], [1200, 1900, 2850], "First call", "25/07/2023");
     });
@@ -35,7 +41,7 @@ contract("MyContract", (accounts) => {
     });
 
     describe("Try to add invalid student", async () => {
-        it("require trigger exception", async () => {
+        it("Triggered require exception", async () => {
             await truffleAssert.reverts(contract.addStudent(0, 400, 4, accounts[0], 0, { from: accounts[0] }));
         });
     });

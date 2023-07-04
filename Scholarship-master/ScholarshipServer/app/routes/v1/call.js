@@ -184,6 +184,12 @@ router.post('', async function (req, res) {
 				});
 			})
 			.then((initialContract) => {})
+			.catch((error)=>{
+				res.status(400).json({
+					success: false,
+					message: "Impossible to deploy contract, wrong parameters"
+				});
+			})
 	})
 });
 
@@ -238,8 +244,15 @@ router.post('/computeRanking', async function (req, res) {
 							message: "Completed"
 						});
 					}).catch(err => console.log(err));
-				})
-		})
+				}).catch(err => 
+					res.status(400).json({
+						message: "Error in assigning funds"
+					}));
+		}).catch(err => 
+			res.status(400).json({
+				message: "No student to compute ranking"
+			})
+		);
 	})
 });
 

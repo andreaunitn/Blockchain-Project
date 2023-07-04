@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit{
       document.getElementById("callApply").innerHTML = "Ranking computed";
     }),catchError(error => {
       // @ts-ignore  
-      document.getElementById("callApply").innerHTML = "Error in compute ranking";
+      document.getElementById("callApply").innerHTML = error.error.message;
       return of([]);
     })));
 }

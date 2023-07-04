@@ -34,6 +34,8 @@ contract MyContract {
     /////////////////////////////////////////////////////////////////////
 
     constructor(uint256 budget, uint256 isee_limit, uint256[] memory credits, uint256[] memory funds, string memory name, string memory date) {
+        require((budget > 0 && isee_limit > 0 && credits[0] < 300 && credits[1] < 300 && credits[2] < 300 && funds[0] > 0 && funds[1] > 0 && funds[2] > 0), "Invalid parameter");
+        
         ISEE_LIMIT = isee_limit;
         BUDGET = budget;
         CREDITS_PER_YEAR = credits;
