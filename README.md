@@ -4,16 +4,14 @@ To start the project, first move in the correct directory with
 ``` 
 cd Scholarship-master
 ```
-Then install the necessary dependencies
+To run the backend server, in the ScholarshipServer directory, install the necessary dependencies and execute:
 ```
 npm install
-```
-To run the backend server, in the ScholarshipServer directory, execute:
-```
 npm run start
 ```
-To run the Angular frontend, in the ScholarshipFrontend directory, execute:
+To run the Angular frontend, in the ScholarshipFrontend directory, install the necessary dependencies and execute:
 ```
+npm install
 npm run start
 ```
 To make the whole system run properly, we need to run a local Ganache instance on the port 7545.
