@@ -230,7 +230,10 @@ router.post('/computeRanking', async function (req, res) {
 							if(result[i].funds > 0){
 								await RequestCall.updateOne({'name': req.body.name, "address": (result[i].accountAddress).toLowerCase()}, {"released": true, "fund": Number(result[i].funds)});
 							}
-						}		
+						}
+						///// THIS IS ONLY NEEDED FOR DEMO SHOWING
+						await Call.updateOne({'name': req.body.name}, {"endDate": new Date()});
+						
 						res.status(200).json({
 							message: "Completed"
 						});

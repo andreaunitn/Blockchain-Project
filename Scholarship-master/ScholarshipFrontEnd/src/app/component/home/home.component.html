@@ -28,7 +28,7 @@
             <div id="callInfo"></div>
             <br>
             <h2 style="color:red" *ngIf="verifyEndDate() == true && session.getItem('fiscalCode') == null && session.getItem('admin') == null">Login to apply</h2>
-            <button mat-raised-button color="primary" *ngIf="session.getItem('admin') != null" (click)="computeRanking()"> Compute Ranking </button>
+            <button mat-raised-button color="primary" *ngIf="verifyEndDate() == true && session.getItem('admin') != null" (click)="computeRanking()"> Compute Ranking </button>
             <button mat-raised-button color="primary" *ngIf="verifyEndDate() == true && session.getItem('fiscalCode') != null" (click)="applyForCall()"> Apply </button>
             <button mat-raised-button color="primary" style="margin-left: 10px;" *ngIf="verifyEndDate() == false || verifyEndDate() == true" (click)="viewRanking()"> View Ranking </button>
             <br>
