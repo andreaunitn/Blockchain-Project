@@ -6,9 +6,13 @@
     <h2>Request Satisfied</h2>
         <ul class="list-group" *ngFor="let ranking of assignedRankings">
             <li *ngIf="checkUser(ranking.address)" class="list-group-item" id="{{ranking.address}}">
-                <b> {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </b></li>
+                <b> {{ranking.address}} <br>
+                    Score:  {{ranking.score}} (ISEE limit: {{ranking.ISEE}}, Credits: {{ranking.credits}}, University year: {{ranking.year}}, Status: {{ranking.status}}) <br>
+                    Funds assigned: {{ranking.funds}} euro </b></li>
             <li *ngIf="checkUser(ranking.address)==false"  class="list-group-item" id="{{ranking.address}}">
-                {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </li>
+                {{ranking.address}} <br>
+                    Score:  {{ranking.score}} (ISEE limit: {{ranking.ISEE}}, Credits: {{ranking.credits}}, University year: {{ranking.year}}, Status: {{ranking.status}}) <br>
+                    Funds assigned: {{ranking.funds}} euro </li>
         </ul>
     </div>
 
@@ -16,9 +20,13 @@
         <h2>Request not satisfied</h2>
             <ul class="list-group" *ngFor="let ranking of unassignedRankings">
                 <li *ngIf="checkUser(ranking.address)" class="list-group-item" id="{{ranking.address}}">
-                    <b> {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </b></li>
+                    <b> {{ranking.address}} <br>
+                        Score:  {{ranking.score}} (ISEE limit: {{ranking.ISEE}}, Credits: {{ranking.credits}}, University year: {{ranking.year}}, Status: {{ranking.status}}) <br>
+                        Funds assigned: {{ranking.funds}} euro </b></li>
                 <li *ngIf="checkUser(ranking.address)==false"  class="list-group-item" id="{{ranking.address}}">
-                    {{ranking.address}}: {{ranking.score}} ({{ranking.ISEE}}, {{ranking.credits}}, {{ranking.year}}, {{ranking.status}}) => {{ranking.funds}} euro </li>
+                    {{ranking.address}} <br>
+                    Score:  {{ranking.score}} (ISEE limit: {{ranking.ISEE}}, Credits: {{ranking.credits}}, University year: {{ranking.year}}, Status: {{ranking.status}}) <br>
+                    Funds assigned: {{ranking.funds}} euro</li>
             </ul>
         </div>
 </div>

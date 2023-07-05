@@ -42,8 +42,8 @@ export class CallAdminComponent implements OnInit{
     const body = {
       "name": name,
       "description": description,
-      "ISEE": ISEE,
-      "budget": budget,
+      "ISEE": ISEE*1000,
+      "budget": budget*1000,
       "credits": credits,
       "funds": funds,
       "endDate": new Date(endDate)

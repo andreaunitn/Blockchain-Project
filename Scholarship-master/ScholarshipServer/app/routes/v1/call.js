@@ -155,7 +155,7 @@ router.post('', async function (req, res) {
 	var bytecode = output.bytecode;
 
 	contract = new web3.eth.Contract(contractABI);
-	//let newContract;
+	
 	let contractAddress;
 	web3.eth.getAccounts().then((accounts) => {
 		operaAccount = accounts[0];

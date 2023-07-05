@@ -12,25 +12,41 @@
             <textarea matInput  id="description" #description placeholder="Description" required></textarea>
           </mat-form-field><br>
           <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label> ISEE: </mat-label>
-            <input matInput type="number" [min]="0"  id="ISEE" #ISEE value="25000" required>
+            <mat-label> ISEE limit (in thousands of euro): </mat-label>
+            <input matInput type="number" [min]="0"  id="ISEE" #ISEE value="25" required>
           </mat-form-field><br>
           <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label> Budget: </mat-label>
-            <input matInput type="number" [min]="0"  id="Budget" #BUDGET value="2500000" required>
+            <mat-label> Budget (in thousands of euro): </mat-label>
+            <input matInput type="number" [min]="0"  id="Budget" #BUDGET value="2500" required>
           </mat-form-field><br>
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label> Credits per year: </mat-label>
-            <input matInput type="number" style="width:25%;" id="credit1" [min]="0" [max]="300" value="0" #credit1 required>
-            <input matInput type="number" style="width:25%; padding-left: 12%;" id="credit2" [min]="0" [max]="300" value="45" #credit2 required>
-            <input matInput type="number" style="width:25%; float:right;" id="credit3" [min]="0" [max]="300" value="90" #credit3 required>
-          </mat-form-field><br>
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label> Funds per student (IN_SEDE, PENDOLARE, FUORI_SEDE): </mat-label>
-            <input matInput type="number" style="width:25%;" id="fund1" [min]="0" [max]="10000" value="1342" #fund1 required>
-            <input matInput type="number" style="width:25%; padding-left: 12%;" id="fund2" [min]="0" [max]="10000" value="1945" #fund2 required>
-            <input matInput type="number" style="width:25%; float:right;" id="fund3" [min]="0" [max]="10000" value="3329" #fund3 required>
-          </mat-form-field><br>
+          <div style="display:flex; flex-flow: row;" class="example-full-width" >
+            <mat-form-field style="width:30%; " >
+              <mat-label> Credits for first year: </mat-label>
+              <input matInput type="number" style="width:100%;" id="credit1" [min]="0" [max]="300" value="0" #credit1 required>
+            </mat-form-field><br>
+            <mat-form-field  style="width:30%; padding-left: 5%;" >
+              <mat-label> Second year: </mat-label>
+              <input matInput type="number" style="width:100%;" id="credit2" [min]="0" [max]="300" value="45" #credit2 required>
+            </mat-form-field><br>
+            <mat-form-field style="width:30%; padding-left: 5%;" >
+              <mat-label> Third year: </mat-label>
+              <input matInput type="number" style="width:100%;" id="credit3" [min]="0" [max]="300" value="90" #credit3 required>
+            </mat-form-field><br>
+          </div>
+          <div style="display:flex; flex-flow: row;" class="example-full-width" >
+            <mat-form-field style="width:30%; " >
+              <mat-label> Funds for student:  "IN_SEDE": </mat-label>
+              <input matInput type="number" style="width:100%;" id="fund1" [min]="0" [max]="10000" value="1342" #fund1 required>
+            </mat-form-field><br>
+            <mat-form-field  style="width:30%; padding-left: 5%;" >
+              <mat-label> "PENDOLARE": </mat-label>
+              <input matInput type="number" style="width:100%;" id="fund2" [min]="0" [max]="10000" value="1945" #fund2 required>
+            </mat-form-field><br>
+            <mat-form-field style="width:30%; padding-left: 5%;" >
+              <mat-label> "FUORI_SEDE": </mat-label>
+              <input matInput type="number" style="width:100%;" id="fund3" [min]="0" [max]="10000" value="3329" #fund3 required>
+            </mat-form-field><br>
+          </div>
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Choose the end date</mat-label>
             <input matInput [matDatepicker]="picker" id="endDate" #endDate>

@@ -82,7 +82,7 @@ router.post('', async function (req, res) {
 	}
 
   let eligible = true;
-  if(user.ISEE > call.ISEE || user.credits < call.credits[user.uniYear-1]){
+  if(Math.max(Math.ceil(user.ISEE/1000), 1) > Math.floor(call.ISEE/1000)|| user.credits < call.credits[user.uniYear-1]){
 	eligible = false;
   }
 
@@ -105,7 +105,7 @@ router.post('', async function (req, res) {
   web3.eth.getAccounts().then((accounts) => {
 	  operaAccount = accounts[0];
   	  let contract = new web3.eth.Contract(contractABI, call.contractAddress);
-	  let isee = Math.max(Math.floor(user.ISEE/1000), 1); //0 not allowed in contract
+	  let isee = Math.max(Math.ceil(user.ISEE/1000), 1); //0 not allowed in contract
 	  contract.methods.addStudent(isee, user.credits, user.uniYear, req.body.address, statusIndex).send({from:operaAccount}).then(async response => {
 		
 		const newRequest = await RequestCall.create({
