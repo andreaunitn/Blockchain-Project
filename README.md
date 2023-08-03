@@ -1,5 +1,8 @@
 # Blockchain-Project
 
+[Report](https://github.com/andreaunitn/Blockchain-Project/files/12253116/Blockchain.report.pdf)
+</br>
+
 To start the project, first move in the correct directory with 
 ``` 
 cd Scholarship-master
